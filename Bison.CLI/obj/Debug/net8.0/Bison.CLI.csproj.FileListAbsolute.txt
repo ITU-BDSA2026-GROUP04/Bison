@@ -1,0 +1,15 @@
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/bin/Debug/net8.0/Bison.CLI
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/bin/Debug/net8.0/Bison.CLI.deps.json
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/bin/Debug/net8.0/Bison.CLI.runtimeconfig.json
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/bin/Debug/net8.0/Bison.CLI.dll
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/bin/Debug/net8.0/Bison.CLI.pdb
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.AssemblyInfoInputs.cache
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.AssemblyInfo.cs
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.csproj.CoreCompileInputs.cache
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.sourcelink.json
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.dll
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/refint/Bison.CLI.dll
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.pdb
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/Bison.CLI.genruntimeconfig.cache
+/Users/muggur/Downloads/Haust 2026 ITU/ADSA/Bison/Bison.CLI/obj/Debug/net8.0/ref/Bison.CLI.dll
