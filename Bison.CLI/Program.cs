@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 //basic if checks to see if the user has provided a command line argument
 if (args.Length > 0)
@@ -35,7 +36,25 @@ if (args.Length > 0)
             }
         }
 //messages shown if user provides an unknown or wrong command
-    } else
+    } if (args[0] == "observe")
+    {
+        //taking in the message from the command line argument and storing the data correctly
+        string message = args[1];
+        string author = Environment.UserName;
+        long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        string csvLine = $"{author},{unixTimestamp},{message}";
+
+        //writing to the CSV file using StreamWriter
+        using (StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true))
+        {
+            writer.WriteLine(csvLine);
+        }
+
+        Console.WriteLine("Observation recorded.");
+
+    
+    }
+     else
     {
         Console.WriteLine("Unknown command");
     }
