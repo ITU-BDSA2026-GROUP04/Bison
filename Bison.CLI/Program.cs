@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
-
+﻿
 //basic if checks to see if the user has provided a command line argument
 if (args.Length > 0)
 {
@@ -36,7 +34,7 @@ if (args.Length > 0)
             }
         }
 //messages shown if user provides an unknown or wrong command
-    } if (args[0] == "observe")
+    } else if (args[0] == "observe")
     {
         //taking in the message from the command line argument and storing the data correctly
         string message = args[1];
@@ -56,7 +54,7 @@ if (args.Length > 0)
     }
      else
     {
-        Console.WriteLine("Unknown command");
+    Console.WriteLine("Unknown command");
     }
 } else
 {
