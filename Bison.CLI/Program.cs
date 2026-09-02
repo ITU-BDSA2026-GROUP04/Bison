@@ -1,6 +1,7 @@
 ﻿using System;
 using CsvHelper;
 using CultureInfo = System.Globalization.CultureInfo;
+using SimpleDB;
 
 
 //basic if checks to see if the user has provided a command line argument
