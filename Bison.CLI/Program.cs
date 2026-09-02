@@ -1,6 +1,8 @@
+﻿using System;
+using CsvHelper;
+using CultureInfo = System.Globalization.CultureInfo;
 
 
-//This is an arbitrary comment
 //basic if checks to see if the user has provided a command line argument
 if (args.Length > 0)
 {
@@ -10,48 +12,35 @@ if (args.Length > 0)
 
         //read the CSV using StreamReader 
         using (StreamReader reader = new StreamReader("bison_observe_cli_db.csv"))
+        using(var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            string? line;
-            while ((line = reader.ReadLine()) != null)
+            var records = csv.GetRecords<Cheep>();
+            foreach (var record in records)
             {
-                string[] fields = line.Split(',', 3);
-                if (fields.Length == 3)
-                {
-                    //collect the author, timestamp, and message from the fields
-                    string author = fields[0];
-                    string unixTimestamp = fields[1];
-                    string message = fields[2];
-
-                    // Convert the Unix timestamp to the correct format
-                    long unixTime = long.Parse(unixTimestamp);
-                    DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTime);
-                    string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
-                    
-                    //print the author, formatted date, and message
-                    Console.WriteLine($"{author} @ {formattedDate}: {message}");
-                } else
-                {
-                    Console.WriteLine($"Invalid line format: {line}");
-                }
+                // Convert the Unix timestamp to the correct format
+                DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(record.timestamp);
+                string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
+                
+                //print the author, formatted date, and message
+                Console.WriteLine($"{record.author} @ {formattedDate}: {record.message}");
             }
         }
 //messages shown if user provides an unknown or wrong command
     } else if (args[0] == "observe")
     {
-        //taking in the message from the command line argument and storing the data correctly
-        string message = args[1];
-        string author = Environment.UserName;
-        long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        string csvLine = $"{author},{unixTimestamp},{message}";
-
-        //writing to the CSV file using StreamWriter
-        using (StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true))
+        using(StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true))
+        using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            writer.WriteLine(csvLine);
+            //taking in the message from the command line argument and storing the data correctly
+            string message = args[1];
+            string author = Environment.UserName;
+            long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var cheep = new Cheep (author, unixTimestamp, message);
+            csv.WriteRecord(cheep);
+            csv.NextRecord();
+
+            Console.WriteLine("Observation recorded.");
         }
-
-        Console.WriteLine("Observation recorded.");
-
     
     }
      else
@@ -62,3 +51,5 @@ if (args.Length > 0)
 {
     Console.WriteLine("No command provided");
 }
+
+public record Cheep(string author, long timestamp, string message);
