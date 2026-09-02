@@ -1,4 +1,5 @@
-﻿
+﻿// funny arbitrary comment hhehe
+
 //basic if checks to see if the user has provided a command line argument
 if (args.Length > 0)
 {
