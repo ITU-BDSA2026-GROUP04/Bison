@@ -12,21 +12,6 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
         {
             var records = csv.GetRecords<T>().ToList();
             return records;
-
-            // IEnumerable<T> test = new List<T>();
-
-            // foreach (var record in records)
-            // {
-            //     Convert the Unix timestamp to the correct format
-            //     DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(record.timestamp);
-            //     string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
-            //     test.Add(record.author);
-
-            //     Console.WriteLine($"{record.author} @ {formattedDate}: {record.message}");
-            // }
-            
-            // return author, date and message in array
-
         }
     }
 
