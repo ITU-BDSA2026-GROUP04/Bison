@@ -9,7 +9,7 @@ if (args.Length > 0)
 {
     if (args[0] == "read")
     {
-        Console.WriteLine("Reading observations...");
+        /* Console.WriteLine("Reading observations...");
 
         //read the CSV using StreamReader 
         using (StreamReader reader = new StreamReader("bison_observe_cli_db.csv"))
@@ -25,11 +25,11 @@ if (args.Length > 0)
                 //print the author, formatted date, and message
                 Console.WriteLine($"{record.author} @ {formattedDate}: {record.message}");
             }
-        }
+        }*/
 //messages shown if user provides an unknown or wrong command
     } else if (args[0] == "observe")
     {
-        using(StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true))
+       /* using(StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true))
         using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             //taking in the message from the command line argument and storing the data correctly
@@ -41,9 +41,8 @@ if (args.Length > 0)
             csv.NextRecord();
 
             Console.WriteLine("Observation recorded.");
-        }
-    
-    }
+        }*/
+    } 
      else
     {
     Console.WriteLine("Unknown command");
