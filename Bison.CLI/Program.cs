@@ -2,10 +2,20 @@
 using CsvHelper;
 using CultureInfo = System.Globalization.CultureInfo;
 using SimpleDB;
+using System.CommandLine;
+
+CSVDatabase<Cheep> database = new CSVDatabase<Cheep>();
+
+var readCommand = new Command("read","read observations");
+
+var rootCommand = new RootCommand("RootCommand")
+{
+    Subcommands = {readCommand}
+};
 
 
 //basic if checks to see if the user has provided a command line argument
-if (args.Length > 0)
+/*if (args.Length > 0)
 {
     CSVDatabase<Cheep> database = new CSVDatabase<Cheep>();
 
@@ -32,7 +42,7 @@ if (args.Length > 0)
 else
 {
     UserInterface.PrintInvalidCommand();
-}
+}*/
 
 
 public record Cheep(string Author, long Timestamp, string Message);
