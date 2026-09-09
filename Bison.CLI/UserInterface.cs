@@ -10,7 +10,7 @@ public static void PrintCheeps(IEnumerable<Cheep> cheeps)
         }
     }
 
-
+//formatting
 
 public static void PrintCommandUnknown()
     {
@@ -20,6 +20,11 @@ public static void PrintCommandUnknown()
 public static void PrintInvalidCommand()
     {
         Console.WriteLine("Please provide a command");
+    }
+
+public static void PrintObsvervationRecorded(string Message)
+    {
+        Console.WriteLine("Observation: \"" + Message + "\" recorded"); 
     }
 }
 
