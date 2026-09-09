@@ -17,10 +17,10 @@ if (args.Length > 0)
     }
     else if (args[0] == "observe")
     {
-        string message = args[1];
-        string author = Environment.UserName;
+        string Message = args[1];
+        string Author = Environment.UserName;
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        var cheep = new Cheep (author, unixTimestamp, message);
+        var cheep = new Cheep (Author, unixTimestamp, Message);
         database.Store(cheep);
 
     }
@@ -35,4 +35,4 @@ else
 }
 
 
-public record Cheep(string author, long timestamp, string message);
+public record Cheep(string Author, long Timestamp, string Message);
