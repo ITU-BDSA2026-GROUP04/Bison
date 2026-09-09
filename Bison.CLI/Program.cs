@@ -8,8 +8,8 @@ using System.CommandLine;
 CSVDatabase<Cheep> database = new CSVDatabase<Cheep>();
 
 //initalising the commands to use as well as their descriptions
-var readCommand = new Command("--read","read all observations");
-var observeCommand = new Command("--observe", "Record an observation");
+var readCommand = new Command("read","read all observations");
+var observeCommand = new Command("observe", "Record an observation");
 var messageArgument = new Argument<string>("message");
 observeCommand.Add(messageArgument);
 
@@ -34,7 +34,7 @@ readCommand.SetAction((ParseResult parseResult) =>
 //put an observation into the database
 observeCommand.SetAction((ParseResult parseResult) =>
 {
-        string? Message = parseResult.GetValue(messageArgument); //get the message
+        string Message = parseResult.GetRequiredValue(messageArgument); //get the message
         string Author = Environment.UserName; //get the author
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
         var cheep = new Cheep (Author, unixTimestamp, Message); //format the cheep for storage
