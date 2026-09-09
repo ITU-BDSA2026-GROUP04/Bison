@@ -28,9 +28,18 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     public void Store(T record) 
     {
+        // Calculate whether the file needs a header
+        bool needsHeader = !File.Exists(filename) || new FileInfo(filename).Length == 0;
+
         using(StreamWriter writer = new StreamWriter(filename, true)) //open the "book"
         using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) //read the "page"
         {
+            if (needsHeader)
+            {
+                csv.WriteHeader<T>();
+                csv.NextRecord();
+            }
+
             csv.WriteRecord(record);
             csv.NextRecord();
 
