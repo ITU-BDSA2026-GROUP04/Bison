@@ -8,17 +8,12 @@ using SimpleDB;
 if (args.Length > 0)
 {
     CSVDatabase<Cheep> database = new CSVDatabase<Cheep>();
-    
+
     if (args[0] == "read")
     {
-        IEnumerable<Cheep> test = database.Read();
+        IEnumerable<Cheep> cheeps = database.Read();
+        UserInterface.PrintCheeps(cheeps);
 
-        foreach(Cheep cheep in test)
-        {
-            DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(cheep.timestamp);
-            string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
-            Console.WriteLine($"{cheep.author} @ {formattedDate}: {cheep.message}");
-        }
     }
     else if (args[0] == "observe")
     {
@@ -27,15 +22,17 @@ if (args.Length > 0)
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var cheep = new Cheep (author, unixTimestamp, message);
         database.Store(cheep);
-    
-        Console.WriteLine("Observation recorded.");
-        }
-    } 
+
+    }
     else
     {
-        Console.WriteLine("Unknown command");
+        UserInterface.PrintCommandUnknown();
     }
-    
+}
+else
+{
+    UserInterface.PrintInvalidCommand();
+}
 
 
 public record Cheep(string author, long timestamp, string message);
