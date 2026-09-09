@@ -4,9 +4,9 @@ public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
           foreach(Cheep cheep in cheeps)
           {
-              DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(cheep.timestamp);
+              DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
               string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
-              Console.WriteLine($"{cheep.author} @ {formattedDate}: {cheep.message}");
+              Console.WriteLine($"{cheep.Author} @ {formattedDate}: {cheep.Message}");
         }
     }
 
@@ -19,7 +19,7 @@ public static void PrintCommandUnknown()
 
 public static void PrintInvalidCommand()
     {
-        Console.WriteLine("Please provide a command.");
+        Console.WriteLine("Please provide a command");
     }
 }
 
