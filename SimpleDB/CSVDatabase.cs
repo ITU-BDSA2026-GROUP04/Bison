@@ -4,10 +4,21 @@ using CultureInfo = System.Globalization.CultureInfo;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    private readonly string filename;
+
+    public CSVDatabase(string filename = "bison_observe_cli_db.csv")
+    { // made a default parameter value 
+        this.filename = filename;
+    }
     public IEnumerable<T> Read(int? limit = null)
     {
+        if (!File.Exists(filename))
+        {
+            return Enumerable.Empty<T>();
+        }
+        
         //read the CSV using StreamReader 
-        using (StreamReader reader = new StreamReader("bison_observe_cli_db.csv"))
+        using (StreamReader reader = new StreamReader(filename))
         using(var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<T>().ToList();
@@ -17,7 +28,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     public void Store(T record) 
     {
-        using(StreamWriter writer = new StreamWriter("bison_observe_cli_db.csv", true)) //open the "book"
+        using(StreamWriter writer = new StreamWriter(filename, true)) //open the "book"
         using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) //read the "page"
         {
             csv.WriteRecord(record);
