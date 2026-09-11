@@ -1,9 +1,10 @@
 name: .NET Build and Test
 
 on:
-  push:
+  push: # Run on pushes to any branch
   pull_request:
-    branches: [main]
+    branches: [main] # Any PR targeting main
+
 jobs:
   build:
     runs-on: ubuntu-latest
