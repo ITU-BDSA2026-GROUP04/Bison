@@ -1,20 +1,25 @@
 
-using System.ComponentModel.Design;
-using System.Linq.Expressions;
-using System;
+
+using SimpleDB;
 public class IntegrationTest
 {
     [Fact]
 
     public void test()
     {
-        CSVDatabase database = new CSVDatabase();
-        Cheep cheep = new Cheep("Kir", DateTimeOffset.UtcNow.ToUnixTimeSeconds(), "Pigeon on the ITU roof");
-        database.Store(cheep);
+        CSVDatabase<Observation> database = new CSVDatabase<Observation>("observations.csv");
 
-        IEnumerable<Cheep> cheeps = database.Read();
-        UserInterface ui = new UserInterface();
-        ui.PrintCheeps(cheeps);
+        Observation observation = new Observation(100, "Kir", DateTimeOffset.UtcNow.ToUnixTimeSeconds(), "Pigeon on the ITU roof");
+        database.Store(observation);
+        
+        Observation record = database.Read().ElementAt(0);
+
+        Assert.Equal(100, record.Id);
+        Assert.Equal("Kir", record.Author);
+        Assert.Equal(1789328470,record.Timestamp);
+        Assert.Equal("Pigeon on the ITU roof", record.Message);
+        
+
         
 
 
