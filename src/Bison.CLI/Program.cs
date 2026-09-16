@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using CsvHelper;
 using CultureInfo = System.Globalization.CultureInfo;
 using SimpleDB;
@@ -58,6 +59,23 @@ observeCommand.SetAction((ParseResult parseResult) =>
 commentCommand.SetAction((ParseResult parseResult) =>
 {
     int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id
+    
+    bool observationExists = false;
+    foreach(var o in observationDatabase.Read()) // checks if the observationid exists. 
+    {
+        if (o.Id == observationId)
+        {
+            observationExists = true;
+            break;
+        }
+    }
+
+    if (!observationExists)
+    {
+        UserInterface.PrintObsvervationRecorded("This observation doesn't exist"); 
+        return; // Returns such that the comment isn't saved
+    }
+
     string message = parseResult.GetRequiredValue(commentMessageArgument); //get the message
     string Author = Environment.UserName; //get the author
     long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
