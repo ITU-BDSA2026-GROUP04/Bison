@@ -2,14 +2,40 @@
 using CsvHelper;
 using CultureInfo = System.Globalization.CultureInfo;
 
+
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
     private readonly string filename;
+    readonly CSVDatabase<T> _instance;
+    //static readonly object lockObject = new object();
 
     public CSVDatabase(string filename = "bison_observe_cli_db.csv")
-    { // made a default parameter value 
-        this.filename = filename;
+        { // made a default parameter value 
+            this.filename = filename;
+        }
+    public static CSVDatabase<T> GetInstance() {
+       
+            get 
+            {
+                    if(_instance == null)
+                    {
+                        _instance = new CSVDatabase<T>();
+                    }
+                return instance;    
+            }
+        
     }
+
+    /* public static CSVDatabase<T> Instance 
+    {
+        if(instance == null)
+        {
+            instance = new CSVDatabase<T>();
+        }
+        return instance;
+    }*/
+    
+
     public IEnumerable<T> Read(int? limit = null)
     {
         if (!File.Exists(filename))
