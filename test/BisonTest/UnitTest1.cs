@@ -52,14 +52,15 @@ public class UnitTest
     [Fact]
     public void TestUnixTimestampCorrectConversion() {
         // Arrange
-        long unixTimestamp = 1789552693;
+        long unixTimestamp = 1789553872;
 
         // Act
-        DateTimeOffset datetime = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        string formatteddate = datetime.ToString("MM/dd/yy");
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
+        //string formatteddate = UserInterface.FormattedUnixTime(unixTimestamp);
+        string formatteddate = dateTimeOffset.UtcDateTime.ToString("MM/dd/yy HH:mm:ss");
 
         // Assert
-        Assert.Equal("08/01/23", formatteddate);
+        Assert.True("09/16/26 10.17.52" == formatteddate);
+}
 
     }
-}

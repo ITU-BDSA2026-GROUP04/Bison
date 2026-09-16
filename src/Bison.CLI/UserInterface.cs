@@ -28,7 +28,7 @@ public static void PrintObsvervationRecorded(string Message)
         Console.WriteLine("Observation: \"" + Message + "\" recorded"); 
     }
 
-private static string FormattedUnixTime(long unixTimestamp)
+public static string FormattedUnixTime(long unixTimestamp)
     {
         DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
               string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
