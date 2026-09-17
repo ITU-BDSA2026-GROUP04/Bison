@@ -11,19 +11,20 @@ CSVDatabase<Comment> commentDatabase = CSVDatabase<Comment>.Instance;
 
 //initalising the commands to use as well as their descriptions
 var readCommand = new Command("read","read all observations");
-var observeCommand = new Command("observe", "Record an observation");
+var observeCommand = new Command("observe", "Record an observation, the location should be written last");
 var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
 
-var messageArgument = new Argument<string>("message");
+var observationArgument = new Argument<string[]>("message, the location should be written last");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
 
-observeCommand.Add(messageArgument);
+observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
+
 
 //establishing Root and subcommands "hierarchy"
 //Root command
@@ -45,14 +46,18 @@ readCommand.SetAction((ParseResult parseResult) =>
 //put an observation into the database
 observeCommand.SetAction((ParseResult parseResult) =>
 {
-        string Message = parseResult.GetRequiredValue(messageArgument); //get the message
+        int Id = observationDatabase.Read().Count() + 1; // Works as long as observations are not removed
         string Author = Environment.UserName; //get the author
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
-        int id = observationDatabase.Read().Count() + 1; // Works as long as observations are not removed
-        var observation = new Observation(id, Author, unixTimestamp, Message); //format the observation for storage
+        string[] observationArray = parseResult.GetRequiredValue(observationArgument); //get the message and location
+        string Message = string.Join(" ", observationArray.Take(observationArray.Length - 1)); //taking all elements except for the last in the array and making a string
+        string Location = observationArray[observationArray.Length -1]; //getting the last list, which is the location
+        
+        
+        var observation = new Observation(Id, Author, unixTimestamp, Message, Location); //format the observation for storage
         observationDatabase.Store(observation); //actually store the observation
 
-        UserInterface.PrintObsvervationRecorded(Message); //print conformation using User Interface
+        UserInterface.PrintObsvervationRecorded(Message, Location); //print conformation using User Interface
 });
 
 // comment command
@@ -72,7 +77,7 @@ commentCommand.SetAction((ParseResult parseResult) =>
 
     if (!observationExists)
     {
-        UserInterface.PrintObsvervationRecorded("This observation doesn't exist"); 
+        UserInterface.PrintObsvervationRecorded("This observation doesn't exist", ""); 
         return; // Returns such that the comment isn't saved
     }
 
@@ -82,7 +87,7 @@ commentCommand.SetAction((ParseResult parseResult) =>
 
     var comment = new Comment(observationId, Author, message, unixTimestamp); //formatting the comment for storage
     commentDatabase.Store(comment);//storing the comment in the matching comment database
-    UserInterface.PrintObsvervationRecorded(message); //print confirmation using User Interface
+    UserInterface.PrintObsvervationRecorded(message,""); //print confirmation using User Interface
 });
 
 // discussion command
