@@ -14,16 +14,19 @@ var readCommand = new Command("read","read all observations");
 var observeCommand = new Command("observe", "Record an observation, the location should be written last");
 var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
+var locationCommand = new Command("location", "Displays all observation from this location");
 
 var observationArgument = new Argument<string[]>("message, the location should be written last");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
+var locationArgument = new Argument<string>("Location");
 
 observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
+locationCommand.Add(locationArgument);
 
 
 //establishing Root and subcommands "hierarchy"
@@ -33,7 +36,7 @@ discussionCommand.Add(discussionIdArgument);
 	    //- messageArgument
 var rootCommand = new RootCommand("RootCommand")
 {
-    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand}
+    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand}
 };
 
 //read observations from the database
@@ -99,5 +102,31 @@ discussionCommand.SetAction((ParseResult parseResult) =>
     UserInterface.PrintCheeps(comments);
 });
 
+//Location command
+locationCommand.SetAction((ParseResult parseResult) =>
+{
+    string location = parseResult.GetRequiredValue(locationArgument);//get the matching location
+    
+    bool locationExists = false;
+    var observations = new List<Observation>(); //list to hold observations with the location
+    foreach(var o in observationDatabase.Read()) // checks if the location exists and adds to the list
+    {
+        if (o.Location.Equals(location))
+        {
+            locationExists = true;
+            observations.Add(o);
+            
+        }
+        
+    }
+    UserInterface.PrintCheeps(observations); //print the list of observations with this location
+
+    if (!locationExists)
+    {
+        UserInterface.PrintObsvervationRecorded("This location doesn't have any observations", ""); 
+
+    }
+
+});
 //parses the input into a parseResult and invokes the action for the command
 return rootCommand.Parse(args).Invoke();
