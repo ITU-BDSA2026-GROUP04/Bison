@@ -11,7 +11,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     private CSVDatabase()//load files here
     {
-        filename = "bison_observe_cli_db.csv"; //default filename
+        filename = "observations.csv"; //default filename
     } 
 
     public static CSVDatabase<T> Instance => instance; //single public access point to the database // or use get instead
@@ -20,7 +20,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     private readonly string filename;
 
-    private CSVDatabase(string filename = "bison_observe_cli_db.csv") //Changed to private
+    private CSVDatabase(string filename = "observations.csv") //Changed to private
     { // made a default parameter value 
         this.filename = filename;
     }
