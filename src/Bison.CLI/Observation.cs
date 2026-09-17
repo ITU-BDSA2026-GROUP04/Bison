@@ -5,4 +5,4 @@ public record Observation
     long Timestamp, 
     string Message,
     string Location
-): Cheep(Author, Timestamp, Message, Location);
+): Cheep(Author, Timestamp, Message);
