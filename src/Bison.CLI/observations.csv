@@ -1,3 +1,4 @@
-Id,Author,Timestamp,Message
-1,vladislavm,1788957581,Bird near ITU
-2,sarahmariechristensen,1789553872,test
+Id,Author,Timestamp,Message,Location
+1,vladislavm,1788957581,Bird near ITU,ITU
+2,sarahmariechristensen,1789553872,test,DRByen
+3,julie,1789682378,Hello my people,DRByen
