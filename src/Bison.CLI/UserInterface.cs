@@ -7,7 +7,7 @@ public static void PrintCheeps(IEnumerable<Observation> observations)
           foreach(Observation observation in observations)
           {
             String formattedDate = FormattedUnixTime(observation.Timestamp);
-              Console.WriteLine($"{observation.Author} @ {formattedDate}: {observation.Message}:");
+              Console.WriteLine($"{observation.Author} @ {formattedDate}: {observation.Message} at {observation.Location}");
         }
     }
 
