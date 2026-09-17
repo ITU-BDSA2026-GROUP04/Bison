@@ -35,7 +35,7 @@ public class UnitTest
     public void TestComments_OnNonExistingObservations_AreNotStored() {
         // Arrange
         //var observationDatabase = new CSVDatabase<Observation>("test_observations.csv");
-        var commentDatabase = new CSVDatabase<Comment>("test_comments.csv");
+        var commentDatabase = CSVDatabase<Comment>.Instance; //("test_comments.csv")
         int nonExistingObservationID = 1;
 
         // Act

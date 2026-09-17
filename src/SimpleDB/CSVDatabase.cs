@@ -4,9 +4,23 @@ using CultureInfo = System.Globalization.CultureInfo;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+     //Changes
+    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
+
+    static CSVDatabase(){} //static constructor
+
+    private CSVDatabase()//load files here
+    {
+        filename = "bison_observe_cli_db.csv"; //default filename
+    } 
+
+    public static CSVDatabase<T> Instance => instance; //single public access point to the database // or use get instead
+
+    //Fejl i  CsvTest og BisonTest, men tror det er implementeret korrekt herinde.
+
     private readonly string filename;
 
-    public CSVDatabase(string filename = "bison_observe_cli_db.csv")
+    private CSVDatabase(string filename = "bison_observe_cli_db.csv") //Changed to private
     { // made a default parameter value 
         this.filename = filename;
     }
