@@ -4,11 +4,25 @@ using CultureInfo = System.Globalization.CultureInfo;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    
+    private static CSVDatabase<T>? instance = null; // private static variable holding the single shared instance - has to be nullable
     private readonly string filename;
 
-    public CSVDatabase(string filename = "bison_observe_cli_db.csv")
+    private CSVDatabase(string filename = "bison_observe_cli_db.csv") // must have a private constructor such that external code/classes cannot instantiate them directly
     { // made a default parameter value 
         this.filename = filename;
+    }
+
+    public static CSVDatabase<T> Instance // public static method returning the single object/instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new CSVDatabase<T>();
+            }
+            return instance;
+        }
     }
     public IEnumerable<T> Read(int? limit = null)
     {
