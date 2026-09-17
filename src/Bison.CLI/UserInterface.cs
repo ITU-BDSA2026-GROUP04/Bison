@@ -2,15 +2,23 @@ using System.Runtime.CompilerServices;
 
 public static class UserInterface
 {
+public static void PrintCheeps(IEnumerable<Observation> observations)
+    {
+          foreach(Observation observation in observations)
+          {
+            String formattedDate = FormattedUnixTime(observation.Timestamp);
+              Console.WriteLine($"{observation.Author} @ {formattedDate}: {observation.Message}:");
+        }
+    }
+
 public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
           foreach(Cheep cheep in cheeps)
           {
             String formattedDate = FormattedUnixTime(cheep.Timestamp);
-              Console.WriteLine($"{cheep.Author} @ {formattedDate}: {cheep.Message}");
+              Console.WriteLine($"{cheep.Author} @ {formattedDate}: {cheep.Message}:");
         }
     }
-
 //formatting
 
 public static void PrintCommandUnknown()
@@ -23,9 +31,9 @@ public static void PrintInvalidCommand()
         Console.WriteLine("Please provide a command");
     }
 
-public static void PrintObsvervationRecorded(string Message)
+public static void PrintObsvervationRecorded(string Message, string Location)
     {
-        Console.WriteLine("Observation: \"" + Message + "\" recorded"); 
+        Console.WriteLine("Observation: \"" + Message + "\" recorded at " + Location); 
     }
 
 public static string FormattedUnixTime(long unixTimestamp)
