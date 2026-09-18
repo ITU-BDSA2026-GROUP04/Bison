@@ -6,7 +6,8 @@ using SimpleDB;
 using System.CommandLine;
 
 //initalising the database
-CSVDatabase<Observation> observationDatabase = new CSVDatabase<Observation>("observations.csv");
+//multiple instances of singletons : Observations and Comments -> multiple databases
+CSVDatabase<Observation> observationDatabase = new CSVDatabase<Observation>("/");
 CSVDatabase<Comment> commentDatabase = new CSVDatabase<Comment>("comments.csv");
 
 //initalising the commands to use as well as their descriptions
