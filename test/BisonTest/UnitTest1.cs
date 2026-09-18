@@ -13,6 +13,7 @@ public class UnitTest
 {
     // cd test/BisonTest
     // dotnet test
+
     [Fact]
     public void TestObservationStoresCorrectData() {
         // Arrange
@@ -35,14 +36,15 @@ public class UnitTest
     public void TestComments_OnNonExistingObservations_AreNotStored() {
         // Arrange
         //var observationDatabase = new CSVDatabase<Observation>("test_observations.csv");
-        var commentDatabase = new CSVDatabase<Comment>("test_comments.csv");
-        int nonExistingObservationID = 1;
+        //var commentDatabase = new CSVDatabase<Comment>("test_comments.csv");
+        var commentDatabase = CSVDatabase<Comment>.Instance;
+        int nonExistingObservationID = 999;
 
         // Act
         var comment = new Comment(nonExistingObservationID, "TestUser", "Test message", DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             commentDatabase.Store(comment);
         
-        bool commentExists = commentDatabase.Read().Any(c => c.ObservationId == 1);
+        bool commentExists = commentDatabase.Read().Any(c => c.ObservationId == nonExistingObservationID);
 
         // Assert
         Assert.True(commentExists, "Comment is stored even though observation doesn't exist");
