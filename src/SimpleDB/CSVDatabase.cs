@@ -1,29 +1,35 @@
 ﻿namespace SimpleDB;
 using CsvHelper;
-using CultureInfo = System.Globalization.CultureInfo;
+//using CultureInfo = System.Globalization.CultureInfo;
+using System.Globalization;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
-     //Changes
-    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
+    private readonly string filename;
+    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>(filepath);
+    //private static CSVDatabase<T>? instance;
+    private static readonly string? filepath; // private readonly med path
 
-    static CSVDatabase(){} //static constructor
 
-    private CSVDatabase()//load files here
+    public CSVDatabase(string filePath)//load files here
     {
-        filename = "bison_observe_cli_db.csv"; //default filename
+        // argument file path
+        // filename = "bison_observe_cli_db.csv"; //default filename
+        filename = Path.GetFullPath(filePath); // gets the entire path of the file, so it can be used anywhere in the system
+        // filename skal kunne være hvad som helst, ikke hardcoded
     } 
 
-    public static CSVDatabase<T> Instance => instance; //single public access point to the database // or use get instead
-
-    //Fejl i  CsvTest og BisonTest, men tror det er implementeret korrekt herinde.
-
-    private readonly string filename;
-
-    private CSVDatabase(string filename = "bison_observe_cli_db.csv") //Changed to private
-    { // made a default parameter value 
-        this.filename = filename;
+    /*
+    public static CSVDatabase<T> GetInstance(string filePath)
+    {
+        return instance ??= new CSVDatabase<T>(filePath);
     }
+    */
+
+    public static CSVDatabase<T> Instance => instance; //getter which returns an instance. Ensures single public access point to the database 
+
+    //Forsat fejl i  CsvTest og BisonTest (benytter af forkert database)
+
     public IEnumerable<T> Read(int? limit = null)
     {
         if (!File.Exists(filename))
@@ -62,7 +68,6 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
             // string author = Environment.UserName;
             // long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             // var cheep = new Cheep (author, unixTimestamp, message);
-
 
             // Console.WriteLine("Observation recorded.");
         }
