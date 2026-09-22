@@ -5,28 +5,17 @@ using System.Globalization;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    private static CSVDatabase<T>? instance;
     private readonly string filename;
-    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>(filepath);
-    //private static CSVDatabase<T>? instance;
-    private static readonly string? filepath; // private readonly med path
 
+    static CSVDatabase(){} //static constructor
 
-    public CSVDatabase(string filePath)//load files here
+    private CSVDatabase()//load files here
     {
-        // argument file path
-        // filename = "bison_observe_cli_db.csv"; //default filename
-        filename = Path.GetFullPath(filePath); // gets the entire path of the file, so it can be used anywhere in the system
-        // filename skal kunne være hvad som helst, ikke hardcoded
-    } 
-
-    /*
-    public static CSVDatabase<T> GetInstance(string filePath)
-    {
-        return instance ??= new CSVDatabase<T>(filePath);
+        filename = "bison_observe_cli_db.csv"; //default filename
     }
-    */
 
-    public static CSVDatabase<T> Instance => instance; //getter which returns an instance. Ensures single public access point to the database 
+    public static CSVDatabase<T> Instance => instance; //getter which returns an instance. Ensures single public access point to the database
 
     //Forsat fejl i  CsvTest og BisonTest (benytter af forkert database)
 
@@ -75,5 +64,3 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
 
 }
-
-
