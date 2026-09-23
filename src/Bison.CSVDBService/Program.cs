@@ -3,8 +3,8 @@ using SimpleDB;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var observationDb = new CSVDatabase<Observation>("observations.csv");
-var commentDb = new CSVDatabase<Comment>("comments.csv");
+var observationDb = ObservationDatabase<Observation>.Instance;
+var commentDb = CommentDatabase<Comment>.Instance;
 
 //Get observations. Use our existing Read method to return all observations in the database
 app.MapGet("/observations", () => observationDb.Read());
