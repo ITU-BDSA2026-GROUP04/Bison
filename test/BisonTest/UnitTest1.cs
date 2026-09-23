@@ -14,6 +14,18 @@ public class UnitTest
     // cd test/BisonTest
     // dotnet test
     [Fact]
+
+    public void TestInstanceCalledMultipleTimesStillReturnsSameReference() {
+        // Arrange & Act
+        var obsDbInstance1 = ObservationDatabase<Observation>.Instance;
+        var obsDbInstance2 = ObservationDatabase<Observation>.Instance;
+
+        // Assert
+        Assert.Same(obsDbInstance1, obsDbInstance2);
+    }
+
+
+    [Fact]
     public void TestObservationStoresCorrectData() {
         // Arrange
         int id = 1;
@@ -35,7 +47,7 @@ public class UnitTest
     public void TestComments_OnNonExistingObservations_AreNotStored() {
         // Arrange
         //var observationDatabase = new CSVDatabase<Observation>("test_observations.csv");
-        var commentDatabase = new CSVDatabase<Comment>("test_comments.csv");
+        var commentDatabase = CSVDatabase<Comment>.Instance; //("test_comments.csv")
         int nonExistingObservationID = 1;
 
         // Act
