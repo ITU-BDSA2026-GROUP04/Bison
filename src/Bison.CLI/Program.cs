@@ -6,8 +6,9 @@ using SimpleDB;
 using System.CommandLine;
 
 //initalising the database
-CSVDatabase<Observation> observationDatabase = CSVDatabase<Observation>.Instance;
-CSVDatabase<Comment> commentDatabase = CSVDatabase<Comment>.Instance;
+//multiple instances of singletons : Observations and Comments -> multiple databases
+ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
+CommentDatabase<Comment> commentDatabase = CommentDatabase<Comment>.Instance;
 
 //initalising the commands to use as well as their descriptions
 var readCommand = new Command("read","read all observations");
