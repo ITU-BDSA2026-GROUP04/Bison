@@ -6,28 +6,30 @@ using SimpleDB;
 using System.CommandLine;
 
 //initalising the database
+//initalising the database
 //multiple instances of singletons : Observations and Comments -> multiple databases
 ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
 CommentDatabase<Comment> commentDatabase = CommentDatabase<Comment>.Instance;
 
 //initalising the commands to use as well as their descriptions
 var readCommand = new Command("read","read all observations");
-var observeCommand = new Command("observe", "Record an observation");
+var observeCommand = new Command("observe", "Record an observation, the location should be written last");
 var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
 var locationCommand = new Command("location", "Displays all observation from this location");
 
-var messageArgument = new Argument<string>("message");
+var observationArgument = new Argument<string[]>("message, the location should be written last");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
 var locationArgument = new Argument<string>("Location");
 
-observeCommand.Add(messageArgument);
+observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
 locationCommand.Add(locationArgument);
+
 
 //establishing Root and subcommands "hierarchy"
 //Root command
@@ -36,7 +38,7 @@ locationCommand.Add(locationArgument);
 	    //- messageArgument
 var rootCommand = new RootCommand("RootCommand")
 {
-    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand}
+    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand}
 };
 
 //read observations from the database
@@ -80,7 +82,7 @@ commentCommand.SetAction((ParseResult parseResult) =>
 
     if (!observationExists)
     {
-        UserInterface.PrintObsvervationRecorded("This observation doesn't exist"); 
+        UserInterface.PrintObsvervationRecorded("This observation doesn't exist", ""); 
         return; // Returns such that the comment isn't saved
     }
 
@@ -90,7 +92,7 @@ commentCommand.SetAction((ParseResult parseResult) =>
 
     var comment = new Comment(observationId, Author, message, unixTimestamp); //formatting the comment for storage
     commentDatabase.Store(comment);//storing the comment in the matching comment database
-    UserInterface.PrintObsvervationRecorded(message); //print confirmation using User Interface
+    UserInterface.PrintObsvervationRecorded(message,""); //print confirmation using User Interface
 });
 
 // discussion command
@@ -128,6 +130,5 @@ locationCommand.SetAction((ParseResult parseResult) =>
     }
 
 });
-
 //parses the input into a parseResult and invokes the action for the command
 return rootCommand.Parse(args).Invoke();
