@@ -1,0 +1,12 @@
+using System;
+using CsvHelper;
+using CultureInfo = System.Globalization.CultureInfo;
+using SimpleDB;
+using System.CommandLine;
+using System.Net.Http.Json;
+
+/*Purpose of this class 
+- The only place that needs adaptation if the API changes
+- Program.cs therefore doesn't need to fiddle with the HTTP or JSON
+*/
+
