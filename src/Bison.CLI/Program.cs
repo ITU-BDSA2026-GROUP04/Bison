@@ -5,10 +5,20 @@ using CultureInfo = System.Globalization.CultureInfo;
 using SimpleDB;
 using System.CommandLine;
 
+//from week4 slides (HTTPs stuff)
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+
+
 //initalising the database
 //multiple instances of singletons : Observations and Comments -> multiple databases
-ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
-CommentDatabase<Comment> commentDatabase = CommentDatabase<Comment>.Instance;
+var client = new HttpClient();
+client.BaseAddress = new Uri("http://localhost:5094");
+
+
+var observationDatabase = ObservationDatabase<Observation>.Instance;
+var commentDatabase = CommentDatabase<Comment>.Instance;
 
 //initalising the commands to use as well as their descriptions
 var readCommand = new Command("read","read all observations");
@@ -41,16 +51,19 @@ var rootCommand = new RootCommand("RootCommand")
 };
 
 //read observations from the database
-readCommand.SetAction((ParseResult parseResult) =>
+readCommand.SetAction(async (ParseResult parseResult) =>
 {
-    IEnumerable<Observation> observations = observationDatabase.Read();
+    var observations = await client.GetFromJsonAsync<List<Observation>>("/observations"); //Read from the database using the API
+
     UserInterface.PrintCheeps(observations); //print using the User Interface
 });
 
 //put an observation into the database
-observeCommand.SetAction((ParseResult parseResult) =>
+observeCommand.SetAction(async (ParseResult parseResult) =>
 {
-        int Id = observationDatabase.Read().Count() + 1; // Works as long as observations are not removed
+        //int Id = observationDatabase.Read().Count() + 1; // (OLD WAY)
+        int Id= await client.GetFromJsonAsync<int>("/observation/id"); //get the next id from the database using the API (NEW way)
+
         string Author = Environment.UserName; //get the author
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
         string[] observationArray = parseResult.GetRequiredValue(observationArgument); //get the message and location
@@ -59,8 +72,10 @@ observeCommand.SetAction((ParseResult parseResult) =>
         
         
         var observation = new Observation(Id, Author, unixTimestamp, Message, Location); //format the observation for storage
-        observationDatabase.Store(observation); //actually store the observation
-
+        
+        
+        //observationDatabase.Store(observation); //actually store the observation (OLD WAY)
+        await client.PostAsJsonAsync("/observation", observation); //store the observation in the database using the API 
         UserInterface.PrintObsvervationRecorded(Message, Location); //print conformation using User Interface
 });
 
