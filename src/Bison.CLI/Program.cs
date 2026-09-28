@@ -62,7 +62,8 @@ readCommand.SetAction(async (ParseResult parseResult) =>
 observeCommand.SetAction(async (ParseResult parseResult) =>
 {
         //int Id = observationDatabase.Read().Count() + 1; // (OLD WAY)
-        int Id= await client.GetFromJsonAsync<int>("/observation/id"); //get the next id from the database using the API (NEW way)
+        var observations = await client.GetFromJsonAsync<List<Observation>>("/observations"); //get the next id from the database using the API (NEW way)
+        int Id = observations.Count() + 1; //increment the id by 1
 
         string Author = Environment.UserName; //get the author
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
@@ -82,7 +83,7 @@ observeCommand.SetAction(async (ParseResult parseResult) =>
 // comment command
 commentCommand.SetAction((ParseResult parseResult) =>
 {
-    int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id
+    int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id (OLD WAY)
     
     bool observationExists = false;
     foreach(var o in observationDatabase.Read()) // checks if the observationid exists. 
