@@ -23,7 +23,7 @@ public class ObservationService : IObservationService
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _obs.Where(x => x.Author == author).ToList();
+        return DBFacade.GetObservationsFromAuthor(author);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
