@@ -6,7 +6,7 @@ public class DBFacade{
         //some code
 
         var sqlDBFilePath = "/tmp/bison.db";
-        var sqlQuery = "SELECT author_id, text, pub_date FROM observation;";
+        var sqlQuery = "SELECT username, text, pub_date FROM observation join user on author_id = user_id;";
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
         using var connectionString = new SqliteConnection("Data Source=" + sqlDBFilePath);
@@ -31,4 +31,6 @@ public class DBFacade{
         
         return observations;
     }
+
+    
 }
