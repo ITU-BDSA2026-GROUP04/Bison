@@ -6,7 +6,7 @@ public class DBFacade{
         //some code
 
         var sqlDBFilePath = "/tmp/bison.db";
-        var sqlQuery = "SELECT * FROM observation;";
+        var sqlQuery = "SELECT author_id, text, pub_date FROM observation;";
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
         using var connectionString = new SqliteConnection("Data Source=" + sqlDBFilePath);
@@ -20,9 +20,9 @@ public class DBFacade{
         
         while (reader.Read())
         {
-            var user = reader.GetString(1);
-            var obs = reader.GetString(2);
-            var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(3));
+            var user = reader.GetString(0);
+            var obs = reader.GetString(1);
+            var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(2));
 
             ObservationViewModel observation = new ObservationViewModel(user, obs, timestamp);
             
