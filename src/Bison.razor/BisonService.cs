@@ -17,7 +17,7 @@ public class ObservationService : IObservationService
 
     public List<ObservationViewModel> GetObservations()
     {
-        return _obs;
+        return DBFacade.GetObservations();
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
@@ -26,7 +26,7 @@ public class ObservationService : IObservationService
         return _obs.Where(x => x.Author == author).ToList();
     }
 
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
         // Unix timestamp is seconds past epoch
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
