@@ -1,7 +1,18 @@
+using System.IO;
+using System.Threading.Tasks.Dataflow;
+
+string path;
+path = Environment.GetEnvironmentVariable("BISONDBPATH");
+if(path == null)
+{
+    path = Path.Join(Path.GetTempPath(), "mybison.db");
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton(new DBFacade(path));
 builder.Services.AddSingleton<IObservationService, ObservationService>();
 
 
