@@ -48,17 +48,25 @@ public class DBFacade{
         return observations;
     }
 
-    public static List<ObservationViewModel> GetObservationsFromAuthor(string author){
+    public static List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1){
         
         var sqlDBFilePath = "/tmp/bison.db";
+        int offset = (page -1) * 32;
         //getting only the observations where author is equal to the given string
-        var sqlQuery = "SELECT username, text, pub_date FROM observation join user on author_id = user_id WHERE username = $author;";
+        var sqlQuery = """
+                        SELECT username, text, pub_date 
+                        FROM observation 
+                        JOIN user on author_id = user_id 
+                        WHERE username = $author
+                        LIMIT 32 OFFSET $offset
+                        """;
         
         using var connection = new SqliteConnection("Data Source=" + sqlDBFilePath);
         connection.Open();
         using var command = new SqliteCommand(sqlQuery, connection);
-        //doing so that the author in the sqlstatements is looking for the given author string
+        //doing so that the author in the sqlstatements is looking for the given author and offset string
         command.Parameters.AddWithValue("$author", author);
+        command.Parameters.AddWithValue("$offset", offset);
 
         List<ObservationViewModel> observations = new List<ObservationViewModel>();
         

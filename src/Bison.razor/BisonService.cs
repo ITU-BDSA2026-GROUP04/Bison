@@ -4,7 +4,7 @@ public record ObservationViewModel(string Author, string Message, string Timesta
 public interface IObservationService
 {
     public List<ObservationViewModel> GetObservations(int page = 1);
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author);
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
 }
 
 public class ObservationService : IObservationService
@@ -14,10 +14,10 @@ public class ObservationService : IObservationService
         return DBFacade.GetObservations(page);
     }
 
-    public List<ObservationViewModel> GetObservationsFromAuthor(string author)
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1)
     {
         // filter by the provided author name
-        return DBFacade.GetObservationsFromAuthor(author);
+        return DBFacade.GetObservationsFromAuthor(author, page);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
