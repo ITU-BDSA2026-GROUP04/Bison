@@ -1,12 +1,19 @@
 using Microsoft.Data.Sqlite;
 
 public class DBFacade{
-    public static List<ObservationViewModel> GetObservations(){
+    public static List<ObservationViewModel> GetObservations(int page = 1){
         
         //defining the filepatg to the database
         var sqlDBFilePath = "/tmp/bison.db";
-        //defining the select sql statement, so we get the observation, authorname and timestamp
-        var sqlQuery = "SELECT username, text, pub_date FROM observation join user on author_id = user_id;";
+        int offset = (page -1) * 32;
+        //1.a) defining the select sql statement, so we get the observation, authorname and timestamp 
+        //1.b) defining the limit to 32 and offset to the given page number, so we can get the right page of observations
+        var sqlQuery = """
+            SELECT username, text, pub_date
+            FROM observation
+            JOIN user ON author_id = user_id
+            LIMIT 32 OFFSET $offset
+            """;
 
         //establihsing the connection to the database
         using var connection = new SqliteConnection("Data Source=" + sqlDBFilePath);
@@ -15,6 +22,9 @@ public class DBFacade{
 
         //making the command to the sqltable, using the connection and select statement
         using var command = new SqliteCommand(sqlQuery, connection);
+        
+        //adding the offset parameter to the sql statement, so the sql actually knows what offset refrers to
+        command.Parameters.AddWithValue("$offset", offset);
 
         //making a reading variable to the "table" created by the sql statement
         using var reader = command.ExecuteReader();

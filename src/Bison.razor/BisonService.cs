@@ -3,15 +3,15 @@ public record ObservationViewModel(string Author, string Message, string Timesta
 
 public interface IObservationService
 {
-    public List<ObservationViewModel> GetObservations();
+    public List<ObservationViewModel> GetObservations(int page = 1);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author);
 }
 
 public class ObservationService : IObservationService
 {
-    public List<ObservationViewModel> GetObservations()
+    public List<ObservationViewModel> GetObservations(int page = 1)
     {
-        return DBFacade.GetObservations();
+        return DBFacade.GetObservations(page);
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
