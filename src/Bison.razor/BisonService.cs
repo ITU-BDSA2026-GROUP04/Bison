@@ -9,15 +9,20 @@ public interface IObservationService
 
 public class ObservationService : IObservationService
 {
+    DBFacade _facade;
+    public ObservationService(DBFacade DBFacade)
+    {
+        _facade = DBFacade;
+    }
     public List<ObservationViewModel> GetObservations()
     {
-        return DBFacade.GetObservations();
+        return _facade.GetObservations();
     }
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author)
     {
         // filter by the provided author name
-        return DBFacade.GetObservationsFromAuthor(author);
+        return _facade.GetObservationsFromAuthor(author);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
