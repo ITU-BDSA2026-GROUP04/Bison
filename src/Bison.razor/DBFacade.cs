@@ -1,10 +1,17 @@
 using Microsoft.Data.Sqlite;
 
 public class DBFacade{
-    public static List<ObservationViewModel> GetObservations(){
+
+    private readonly string _path;
+
+    public DBFacade(string path)
+    {
+        _path = path;
+    }
+    public List<ObservationViewModel> GetObservations(){
         
         //defining the filepatg to the database
-        var sqlDBFilePath = "/tmp/bison.db";
+        var sqlDBFilePath = _path;
         //defining the select sql statement, so we get the observation, authorname and timestamp
         var sqlQuery = "SELECT username, text, pub_date FROM observation join user on author_id = user_id;";
 
@@ -38,9 +45,9 @@ public class DBFacade{
         return observations;
     }
 
-    public static List<ObservationViewModel> GetObservationsFromAuthor(string author){
+    public List<ObservationViewModel> GetObservationsFromAuthor(string author){
         
-        var sqlDBFilePath = "/tmp/bison.db";
+        var sqlDBFilePath = _path;
         //getting only the observations where author is equal to the given string
         var sqlQuery = "SELECT username, text, pub_date FROM observation join user on author_id = user_id WHERE username = $author;";
         
