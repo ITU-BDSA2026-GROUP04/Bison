@@ -25,7 +25,8 @@ public class ObservationService : IObservationService
         // Unix timestamp is seconds past epoch
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture);
+        //using invariantculture, so it says ':' on the page instead of '.'
+        return dateTime.ToString("MM/dd/yy H:mm:ss", CultureInfo.InvariantCulture); 
     }
 
 }
