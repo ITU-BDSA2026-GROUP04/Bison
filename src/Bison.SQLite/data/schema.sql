@@ -19,6 +19,6 @@ create table comment (
   observation_id integer,
   author_id integer not null,
   text string not null,
-  pub_date integer
+  pub_date integer,
   foreign key(observation_id) references observation(observation_id)
 );
