@@ -13,3 +13,12 @@ create table observation (
   text string not null,
   pub_date integer
 );
+
+drop table if exists comment;
+create table comment (
+  observation_id integer,
+  author_id integer not null,
+  text string not null,
+  pub_date integer
+  foreign key(observation_id) references observation(observation_id)
+);
