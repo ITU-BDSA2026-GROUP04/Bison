@@ -86,6 +86,59 @@ public class DBFacade{
         
         return observations;
     }
+    
+    public static ObservationDetailViewModel getObservationDetailById(int id, int page = 1){
+        var sqlDBFilePath = "/tmp/bison.db";
+        int offset = (page -1) * 32;
+        
+        var sqlQuery = """
+                        SELECT observation.observation_id, observer.username, observation.text, observation.pub_date, comment.text as comment_message, comment.pub_date as comment_pub_date, commenter.username as comment_usernamer 
+                        FROM observation
+                        left join user as observer on observation.author_id = observer.user_id
+                        left join comment on observation.observation_id = comment.observation_id
+                        left join user as commenter on comment.author_id = commenter.user_id
+                        WHERE observation.observation_id = $id;
+                        LIMIT 32 OFFSET $offset
+                        """;
+        
+        using var connection = new SqliteConnection("Data Source=" + sqlDBFilePath);
+        connection.Open();
+        using var command = new SqliteCommand(sqlQuery, connection);
 
+        //doing so that the author in the sqlstatements is looking for the given author and offset string
+        command.Parameters.AddWithValue("$id", id);
+        command.Parameters.AddWithValue("$offset", offset);
+
+
+        List<Comment> comments = new List<Comment>();
+        
+        using var reader = command.ExecuteReader();
+        var observationAuthor = "";
+        var observationMessage = "";
+        var observationTimestamp = "";
+
+    
+            while (reader.Read()) //going through comments and storing them
+        {
+            observationAuthor = reader.IsDBNull(1) ? null : reader.GetString(1);
+            observationMessage = reader.IsDBNull(2) ? null : reader.GetString(2);
+            observationTimestamp = reader.IsDBNull(3) ? null : reader.GetString(3);
+            var commentAuthor = reader.IsDBNull(6) ? null : reader.GetString(6);
+            var commenttimestamp = reader.IsDBNull(5) ? null : ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(5));
+            var commentMessage = reader.IsDBNull(4) ? null : reader.GetString(4);
+
+            Comment comment = new Comment(commentAuthor, commentMessage, commenttimestamp);
+            
+            comments.Add(comment);   
+
+        }
+
+        return new ObservationDetailViewModel(observationAuthor, observationMessage, observationTimestamp, comments);
+      
+        
+        
+       
+        
+    }
     
 }
