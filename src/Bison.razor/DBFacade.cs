@@ -97,7 +97,7 @@ public class DBFacade{
                         left join user as observer on observation.author_id = observer.user_id
                         left join comment on observation.observation_id = comment.observation_id
                         left join user as commenter on comment.author_id = commenter.user_id
-                        WHERE observation.observation_id = $id;
+                        WHERE observation.observation_id = $id
                         LIMIT 32 OFFSET $offset
                         """;
         
