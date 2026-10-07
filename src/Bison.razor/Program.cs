@@ -2,12 +2,13 @@ using System.IO;
 using System.Threading.Tasks.Dataflow;
 
 string path;
-path = Environment.GetEnvironmentVariable("BISONDBPATH./mybison.db");
-Console.WriteLine("START");
+path = Environment.GetEnvironmentVariable("BISONDBPATH");
+
 Console.WriteLine(path);
 if(path == null)
 {
-    path = Path.Join(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "Bison.SQLite/mybison.db")));
+    path = Path.Join(Path.GetTempPath(), "bison.db");
+    Console.WriteLine(path);
 }
 
 
