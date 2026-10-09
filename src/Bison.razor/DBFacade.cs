@@ -123,6 +123,8 @@ public class DBFacade{
             observationAuthor = reader.IsDBNull(1) ? null : reader.GetString(1);
             observationMessage = reader.IsDBNull(2) ? null : reader.GetString(2);
             observationTimestamp = reader.IsDBNull(3) ? null : reader.GetString(3);
+        
+        if(!reader.IsDBNull(4)) {   //only create a comment if it actually exists, or else its never null. Need this for the "no comments so far".
             var commentAuthor = reader.IsDBNull(6) ? null : reader.GetString(6);
             var commenttimestamp = reader.IsDBNull(5) ? null : ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(5));
             var commentMessage = reader.IsDBNull(4) ? null : reader.GetString(4);
@@ -130,7 +132,7 @@ public class DBFacade{
             Comment comment = new Comment(commentAuthor, commentMessage, commenttimestamp);
             
             comments.Add(comment);   
-
+            }
         }
 
         return new ObservationDetailViewModel(observationAuthor, observationMessage, observationTimestamp, comments);
