@@ -1,14 +1,13 @@
 using System.IO;
 using System.Threading.Tasks.Dataflow;
 
-string path;
-path = Environment.GetEnvironmentVariable("BISONDBPATH");
+string path = Environment.GetEnvironmentVariable("BISONDBPATH");
 
-Console.WriteLine(path);
-if(path == null)
+Console.WriteLine("1: " + path);
+if(string.IsNullOrEmpty(path) || !File.Exists(path))
 {
     path = Path.Join(Path.GetTempPath(), "bison.db");
-    Console.WriteLine(path);
+    Console.WriteLine("2: " + path);
 }
 
 
