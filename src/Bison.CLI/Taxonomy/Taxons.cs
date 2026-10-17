@@ -1,6 +1,6 @@
 using CsvHelper;
 
-public abstract record Taxon
+public record Taxon
 {
     int taxon_id;
     Taxon super;
@@ -32,5 +32,6 @@ public abstract record Taxon
     {
        return subs; 
     }
+
     
 }
