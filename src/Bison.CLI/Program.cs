@@ -35,6 +35,9 @@ locationCommand.Add(locationArgument);
 	// - Read Command
 	// - Observe Command
 	    //- messageArgument
+
+Tree.Insert();
+
 var rootCommand = new RootCommand("RootCommand")
 {
     Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand}
