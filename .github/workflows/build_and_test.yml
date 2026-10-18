@@ -16,8 +16,9 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore src/Bison.CLI/Bison.CLI.csproj
+      run: dotnet restore src/Bison.razor/Bison.Razor.csproj
     - name: Build
-      run: dotnet build src/Bison.CLI/Bison.CLI.csproj --no-restore
+      run: dotnet build src/Bison.razor/Bison.Razor.csproj --no-restore
     - name: Test
-      run: dotnet test src/Bison.CLI/Bison.CLI.csproj --no-build --verbosity normal
+      run: dotnet test src/Bison.razor/Bison.Razor.csproj --no-build --verbosity normal
+      
