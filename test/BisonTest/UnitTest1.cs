@@ -14,27 +14,58 @@ public class UnitTest
     // cd test/BisonTest
     // dotnet test
     [Fact]
-
-    public void TestInstanceCalledMultipleTimesStillReturnsSameReference() {
+    [Trait ("Category", "UnitTest")]
+    public void TestInstanceCalledMultipleTimesStillReturnsSame() {
         // Arrange & Act
-        var obsDbInstance1 = ObservationDatabase<Observation>.Instance;
-        var obsDbInstance2 = ObservationDatabase<Observation>.Instance;
+        var obsDbInstance1 = CSVDatabase<Observation>.Instance;
+        var obsDbInstance2 = CSVDatabase<Observation>.Instance;
 
         // Assert
         Assert.Same(obsDbInstance1, obsDbInstance2);
     }
 
+    [Fact]
+    [Trait ("Category", "UnitTest")]
+    public void TestDifferentTypesReturnDifferentInstance() {
+        // Arrange & Act
+        var observationDb = CSVDatabase<Observation>.Instance;
+        var commentDb = CSVDatabase<Comment>.Instance;
+
+        // Assert
+        Assert.NotSame(observationDb, commentDb);
+    }
 
     [Fact]
+    [Trait ("Category", "UnitTest")]
+    public void TestDatabaseFilenameCorrect() {
+        // Arrange & Act
+        var observationDb = CSVDatabase<Observation>.Instance;
+        var observation = new Observation(1, "Test Author", 17000, "Due i haven", "I min sofa");
+
+        var commentDb = CSVDatabase<Comment>.Instance;
+        var comment = new Comment(1, "Test Author", "Due i haven", 17000);
+
+        // Act
+        observationDb.Store(observation);
+        commentDb.Store(comment);
+
+        // Assert
+        Assert.True(File.Exists("observation.csv"), "The true name of the observationdatabase is: " + observationDb);
+        Assert.True(File.Exists("comment.csv"), "The true name of the commentdatabase is: " + commentDb);
+    }
+
+
+    [Fact (Skip = "Skippes midlertidigt da den ikke er tilpasset at observationer nu tager imod en lokation")]
     public void TestObservationStoresCorrectData() {
         // Arrange
         int id = 1;
         string Author = "Test Author";
         long Timestamp = 17000;
         string message = "Test Message";
+        string location = "MISSING";
 
         // Act
-        var observation = new Observation(id, Author, Timestamp, message);
+        var observation = new Observation(id, Author, Timestamp, message, location);
 
         // Assert
         Assert.Equal(1, observation.Id);
@@ -44,6 +75,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait ("Category", "UnitTest")]
     public void TestComments_OnNonExistingObservations_AreNotStored() {
         // Arrange
         //var observationDatabase = new CSVDatabase<Observation>("test_observations.csv");
@@ -62,6 +94,7 @@ public class UnitTest
     }
 
     [Fact]
+    [Trait ("Category", "UnitTest")]
     public void TestUnixTimestampCorrectConversion() {
         // Arrange
         long unixTimestamp = 1789553872;

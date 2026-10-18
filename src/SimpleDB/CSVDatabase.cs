@@ -5,14 +5,14 @@ using System.Globalization;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private static CSVDatabase<T>? instance;
+    private static readonly CSVDatabase<T> instance = new CSVDatabase<T>();
     private readonly string filename;
 
     static CSVDatabase(){} //static constructor
 
     private CSVDatabase()//load files here
     {
-        filename = "bison_observe_cli_db.csv"; //default filename
+        filename = typeof(T).Name.ToLower() + ".csv"; //default filename?? 
     }
 
     public static CSVDatabase<T> Instance => instance; //getter which returns an instance. Ensures single public access point to the database
