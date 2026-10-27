@@ -50,6 +50,7 @@ public Post? GetById(int id)
     return _context.Observations
         .Include(p => p.Author)
         .Include(p => p.Comments)
+            .ThenInclude(c => c.Author)
         .FirstOrDefault(p => p.PostId == id);
 }
 
