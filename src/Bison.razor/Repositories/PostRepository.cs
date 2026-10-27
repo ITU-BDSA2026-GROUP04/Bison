@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 public class PostRepository : IPostRepository //IAggregateRoot
 {
-    private readonly AppDbContext _context;
+    private readonly BisonDBContext _context;
     //private readonly DbSet<T> _dbSet;
 
-    public PostRepository(AppDbContext context)
+    public PostRepository(BisonDBContext context)
     {
         _context = context;
         //_dbSet = context.Set<T>();
