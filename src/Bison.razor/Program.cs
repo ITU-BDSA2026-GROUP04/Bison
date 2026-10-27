@@ -1,8 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IObservationService, ObservationService>();
+builder.Services.AddDbContext<BisonDBContext>(options =>
+    options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 
 var app = builder.Build();
