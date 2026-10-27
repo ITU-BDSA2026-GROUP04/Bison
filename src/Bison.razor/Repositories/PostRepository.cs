@@ -23,7 +23,8 @@ public IEnumerable<Post> GetAll(int page = 1)
         int offset = (page - 1) * pagesize;
 
         return _context.Posts
-            .OrderBy(p => p.Id)
+            .Include(p => p.Author)
+            .OrderBy(p => p.PostId)
             .Skip(offset)
             .Take(pagesize)
             .ToList();
@@ -48,7 +49,7 @@ public Post? GetById(int id)
 {
     return _context.Posts
         .Include(p => p.Author)
-        .FirstOrDefault(p => p.Id == id);
+        .FirstOrDefault(p => p.PostId == id);
 }
 
     /*

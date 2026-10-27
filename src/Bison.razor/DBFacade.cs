@@ -37,9 +37,9 @@ public class DBFacade{
         {
             var user = reader.GetString(0);
             var obs = reader.GetString(1);
-            var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(2));
+            //var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(2));
 
-            ObservationViewModel observation = new ObservationViewModel(user, obs, timestamp);
+            ObservationViewModel observation = new ObservationViewModel(user, obs, ""); //timestamp);
             
             observations.Add(observation);   
         }
@@ -77,9 +77,9 @@ public class DBFacade{
         {
             var user = reader.GetString(0);
             var obs = reader.GetString(1);
-            var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(2));
+            //var timestamp = ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(2));
 
-            ObservationViewModel observation = new ObservationViewModel(user, obs, timestamp);
+            ObservationViewModel observation = new ObservationViewModel(user, obs, ""); //timestamp);
             
             observations.Add(observation);   
         }
@@ -126,12 +126,11 @@ public class DBFacade{
         
         if(!reader.IsDBNull(4)) {   //only create a comment if it actually exists, or else its never null. Need this for the "no comments so far".
             var commentAuthor = reader.IsDBNull(6) ? null : reader.GetString(6);
-            var commenttimestamp = reader.IsDBNull(5) ? null : ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(5));
+            //var commenttimestamp = reader.IsDBNull(5) ? null : ObservationService.UnixTimeStampToDateTimeString(reader.GetDouble(5));
             var commentMessage = reader.IsDBNull(4) ? null : reader.GetString(4);
 
-            Comment comment = new Comment(commentAuthor, commentMessage, commenttimestamp);
-            
-            comments.Add(comment);   
+            //Comment comment = new Comment(commentAuthor, commentMessage, commenttimestamp); Obsolete, now using the Comment class in Models/Comment.cs instead of a new class in this file.
+            //comments.Add(comment);   
             }
         }
 
