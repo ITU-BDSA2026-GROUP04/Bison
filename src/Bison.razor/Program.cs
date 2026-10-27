@@ -12,6 +12,12 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 var app = builder.Build();
 
+//seed the database
+using (var scope = app.Services.CreateScope()){
+var context = scope.ServiceProvider.GetRequiredService<BisonDBContext>();
+    DbInitializer.SeedDatabase(context); //call the DbInitializer to seed the database with initial data
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
