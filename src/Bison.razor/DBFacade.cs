@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-public class DBFacade{
+/*public class DBFacade{
     public static List<ObservationViewModel> GetObservations(int page = 1){
         
         //defining the filepatg to the database
@@ -143,3 +143,4 @@ public class DBFacade{
     }
     
 }
+*/
