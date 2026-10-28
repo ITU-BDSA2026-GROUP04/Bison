@@ -51,6 +51,8 @@ public Post? GetById(int id)
         .Include(p => p.Author)
         .Include(p => p.Comments)
             .ThenInclude(c => c.Author)
+        .Include(p => p.Proposals)
+            .ThenInclude(pr => pr.Author)
         .FirstOrDefault(p => p.PostId == id);
 }
 
