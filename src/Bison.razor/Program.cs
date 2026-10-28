@@ -1,11 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<IObservationService, ObservationService>();
+builder.Services.AddScoped<IObservationService, ObservationService>();
+builder.Services.AddDbContext<BisonDBContext>(options =>
+    options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 
 var app = builder.Build();
+
+//seed the database
+using (var scope = app.Services.CreateScope()){
+var context = scope.ServiceProvider.GetRequiredService<BisonDBContext>();
+    context.Database.EnsureCreated();
+    DbInitializer.SeedDatabase(context); //call the DbInitializer to seed the database with initial data
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
