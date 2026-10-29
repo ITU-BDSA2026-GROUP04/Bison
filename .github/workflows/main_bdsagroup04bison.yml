@@ -55,5 +55,5 @@ jobs:
         with:
           app-name: 'bdsagroup04bison'
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
-          package: .
+          package: ./myapp-files
           
