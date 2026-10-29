@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IObservationService, ObservationService>();
+
+var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ?? "bison.db";
 builder.Services.AddDbContext<BisonDBContext>(options =>
-    options.UseSqlite("Data Source=/home/bison.db")); // Register EF Core with SQLite database
+    options.UseSqlite($"Data Source={dbPath}")); // Register EF Core with SQLite database
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
     options.SignIn.RequireConfirmedAccount = true)
