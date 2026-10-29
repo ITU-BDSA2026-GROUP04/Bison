@@ -20,7 +20,6 @@ builder.Services.AddDbContext<BisonDBContext>(options =>
     ? "Data Source=bison.db"
     : $"Data Source={dbPath}"));
 
-
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
     options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
