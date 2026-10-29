@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddDbContext<BisonDBContext>(options =>
-    options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
+    options.UseSqlite("Data Source=/home/bison.db")); // Register EF Core with SQLite database
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
     options.SignIn.RequireConfirmedAccount = true)
