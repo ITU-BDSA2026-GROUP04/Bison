@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Runtime.Serialization.Formatters.Binary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IObservationService, ObservationService>();
 
 var dbPath = Environment.GetEnvironmentVariable("BISONDBPATH") ?? "bison.db";
+var dbDirectory = Path.GetDirectoryName(dbPath);
+if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+{
+    Directory.CreateDirectory(dbDirectory);
+}
+
 builder.Services.AddDbContext<BisonDBContext>(options =>
-    options.UseSqlite($"Data Source={dbPath}")); // Register EF Core with SQLite database
+    options.UseSqlite(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("BISONDBPATH")) // Register EF Core with SQLite database
+    ? "Data Source=bison.db"
+    : $"Data Source={dbPath}"));
+
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
     options.SignIn.RequireConfirmedAccount = true)
