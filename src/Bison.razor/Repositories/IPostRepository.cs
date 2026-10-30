@@ -10,5 +10,5 @@ public interface  IPostRepository
     // Task GetObservationDetailsById(int id, int page = 1);
     // Task<T> UnixTimeStampToDateTimeString(double unixTimeStamp);
 
-    Post? GetById(int id);
+    Post GetById(int id);
 }
