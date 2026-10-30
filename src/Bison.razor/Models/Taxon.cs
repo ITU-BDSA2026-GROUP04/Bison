@@ -8,4 +8,22 @@ public class Taxon
     public Taxon? Parent { get; set; }
 
     public ICollection<Taxon> Children { get; set; } = new List<Taxon>();
+
+    public bool isSubTaxon(Taxon ancestor) //one subtaxon only has a single parent, but can have multiple children
+    //We only search for the immediate children of the ancestor
+    {
+        Taxon? current = this;
+        while (current != null)
+        {
+            if(current.ParentId == ancestor.TaxonId)
+            {
+                return true;
+            }
+            current = current.Parent;
+    
+        }
+        return false;
+    }
 }
+
+    
