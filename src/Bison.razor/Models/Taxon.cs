@@ -24,6 +24,14 @@ public class Taxon
         }
         return false;
     }
-}
+    public bool isSubTaxon2(Taxon ancestor)
+    {
+        if (ancestor.Children.Contains(this))
+        {
+            return true;
+        } 
+        return false;
+    }
 
+}
     
