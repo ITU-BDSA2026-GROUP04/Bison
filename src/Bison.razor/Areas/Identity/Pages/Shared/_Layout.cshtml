@@ -6,21 +6,23 @@
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
 <body>
+<partial name="_LoginPartial" /> 
 <div class=navigation>
-    <partial name="_LoginPartial" /> 
     @if (User.Identity.IsAuthenticated)
     {
     <div>
-    <a href="/@(User.Identity.Name)">My Observations</a> |
-    <a href="/">Public Observations</a> |
-    <a ... >Logout [@(User.Identity.Name)]</a>
+        <a href="/@(User.Identity.Name)">My Observations</a> |
+        <a href="/">Public Observations</a> |
+        <a ... >Logout [@(User.Identity.Name)]</a>
     </div>
     }
     else
     {
     <div>
+        <a href="/">Public Observations</a>
+        <a>Register</a>
+        <a>Login</a>
     </div>
-    <a href="/">Public Observations</a>
     }
 </div>
 <div class=page>
@@ -30,7 +32,7 @@
     </div>
     <footer class="footer text-muted">
         <div class="container">
-            &copy; Bison &mdash; An ASP.NET Application Built from commit: c07308e9784853ff127337f7328a660360dddfc6
+            &copy; Bison &mdash; An ASP.NET Application Built from commit: 9cc97ba0fe97951442b091a0b289e4d50f10e243
         </div>
     </footer>
 </div>
