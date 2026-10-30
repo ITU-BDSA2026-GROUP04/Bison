@@ -2,7 +2,7 @@
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 //public record Comment(string Author, string Message, string Timestamp); Obsolete, now using the Comment class from the Post.cs model instead of a separate record.
-public record ObservationDetailViewModel(string Author, string Message, string Timestamp, List<Comment> Comment);
+public record ObservationDetailViewModel(string Author, string Message, string Timestamp, List<Comment> Comment, List<Proposal> Proposals);
 
 public interface IObservationService
 {
@@ -38,7 +38,8 @@ public class ObservationService : IObservationService
         if (post == null) return null;
         
         var comments = (post as Observation)?.Comments?.ToList() ?? new List<Comment>(); //if this post is an Observation, get its comments, otherwise return an empty list.
-            return new ObservationDetailViewModel(post.Author.Name, post.Text, post.TimeStamp.ToString(), comments);
+        var proposals = (post as Observation)?.Proposals?.ToList() ?? new List<Proposal>(); 
+            return new ObservationDetailViewModel(post.Author.Name, post.Text, post.TimeStamp.ToString(), comments, proposals);
     }
 }
 
