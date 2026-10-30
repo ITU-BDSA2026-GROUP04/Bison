@@ -2,8 +2,8 @@
 //1.a) Implement filter mechanism using dafny function
 
 //declaration from assignment week7
-class {:extern} Taxon{
-    function {:extern} SubTaxon(ancestor: Taxon): bool
+class {:extern} Taxon{ 
+    function {:extern} IsSubTaxon(ancestor: Taxon): bool
 }
 
 class {:extern} Observation{

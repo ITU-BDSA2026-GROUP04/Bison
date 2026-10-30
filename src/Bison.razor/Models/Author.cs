@@ -1,3 +1,4 @@
+namespace Bison.razor.Models;
 public class Author
 {
     public int AuthorId { get; set; }

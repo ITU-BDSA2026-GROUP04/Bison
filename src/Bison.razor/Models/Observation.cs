@@ -1,3 +1,4 @@
+namespace Bison.razor.Models;
 public class Observation : Post
 {
     public int? TaxonId { get; set; }
