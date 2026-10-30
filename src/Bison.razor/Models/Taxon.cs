@@ -11,11 +11,11 @@ public class Taxon
 
     public bool SubTaxon(Taxon ancestor)
     {
-        var current = Parent;
+        var current = Parent; //Don't check self, only parents
         var steps = 0;
-        while (current != null && steps < 100)
+        while (current != null && steps < 100) //Parent == null, meaning we'll reach the top of the tree (most likely)
         {
-            if (current.TaxonId == ancestor.TaxonId)
+            if (current.TaxonId == ancestor.TaxonId) //Id comparison
             {
                 return true;
             }
@@ -23,6 +23,7 @@ public class Taxon
             steps++;
         }
         return false;
+        //
     }
 
 }
