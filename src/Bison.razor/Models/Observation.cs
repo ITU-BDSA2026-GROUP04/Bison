@@ -1,3 +1,4 @@
+namespace Models;
 public class Observation : Post
 {
     public int? TaxonId { get; set; }

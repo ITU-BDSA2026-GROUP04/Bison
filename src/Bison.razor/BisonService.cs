@@ -1,4 +1,5 @@
  using System.Globalization;
+ using Models;
 public record ObservationViewModel(string Author, string Message, string Timestamp);
 
 //public record Comment(string Author, string Message, string Timestamp); Obsolete, now using the Comment class from the Post.cs model instead of a separate record.

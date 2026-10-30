@@ -1,3 +1,4 @@
+namespace Models;
 public class Taxon
 {
     public int TaxonId { get; set; }
