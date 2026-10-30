@@ -44,6 +44,29 @@
         {
             <em>There are no comments so far.</em>
         }
+
+        @if (Model.Observations.Proposals != null && Model.Observations.Proposals.Any()) 
+        {
+            <h4><strong>Proposals</strong></h4>
+            <ul id="messagelist" class="observations">
+                @foreach (var ob in Model.Observations.Proposals)
+                {
+                    <li>
+                        <p>
+                            <strong>
+                                <a href="/@ob.Author.Name">@ob.Author.Name</a>
+                            </strong>
+                            @ob.Text
+                            <small>&mdash; @ob.TimeStamp</small>
+                        </p>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <em>There are no proposals so far.</em>
+        }
     } else {
         <em>This observation does not exist.</em>
     }
