@@ -56,6 +56,12 @@ public Post? GetById(int id)
         .FirstOrDefault(p => p.PostId == id);
 }
 
+public Taxon? GetTaxonById(int id)
+    //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
+{
+    return _context.Taxons.Find(id);
+}
+
     /*
     public async Task<T> GetObservations(int page = 1) => await ... ; //Consider using Observation instead of T 
     public async Task<T> GetObservationsFromAuthor(string author, int page = 1) => await ... ;
