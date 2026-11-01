@@ -17,7 +17,6 @@ public class FilteredObservationsModel : PageModel
 
     public ActionResult OnGet(int id, int page = 1)
     {
-        Console.WriteLine("ID: " + id);
         Observations = _service.GetFilteredObservations(id, page);
         return Page();
     }
