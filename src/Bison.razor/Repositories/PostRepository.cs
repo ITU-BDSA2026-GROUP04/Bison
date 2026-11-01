@@ -24,6 +24,7 @@ public IEnumerable<Post> GetAll(int page = 1)
 
         return _context.Posts
             .Include(p => p.Author)
+            .Include(p => p.Taxon)
             .OrderBy(p => p.PostId)
             .Skip(offset)
             .Take(pagesize)
