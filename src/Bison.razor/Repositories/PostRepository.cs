@@ -62,7 +62,7 @@ public Taxon? GetTaxonById(int id)
     return _context.Taxons.Find(id);
 }
 
-IEnumerable<Observation> GetAllObservations(int page = 1){
+public IEnumerable<Observation> GetAllObservations(int page = 1){
         int pagesize = 32;
         int offset = (page - 1) * pagesize;
 
@@ -84,6 +84,6 @@ IEnumerable<Observation> GetAllObservations(int page = 1){
     public async Task<T> UnixTimeStampToDateTimeString(double unixTimeStamp) => await ... ;
     */
 
-}
+
 
 
