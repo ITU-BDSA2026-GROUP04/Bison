@@ -69,7 +69,7 @@ public IEnumerable<Observation> GetAllObservations(int page = 1){
 
         return _context.Observations
             .Include(p => p.Author)
-            .Include(p => p.TaxonId)
+            .Include(p => p.Taxon)
             .OrderBy(p => p.PostId)
             .Skip(offset)
             .Take(pagesize)
