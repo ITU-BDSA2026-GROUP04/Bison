@@ -5,7 +5,7 @@ public interface  IPostRepository
     IEnumerable<Post> GetAll(int page = 1);
     IEnumerable<Post> GetByAuthor(string author, int page = 1);
 
-
+    IEnumerable<Observation> GetAllObservations(int page = 1);
     
     // Task GetObservations(int page = 1); //Consider using Observation instead of T 
     // Task GetObservationsFromAuthor(string author, int page = 1);
