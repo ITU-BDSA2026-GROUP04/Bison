@@ -2,7 +2,7 @@
 //This is the repository layer, which is responsible for interacting with the database and returning data to the service layer.
 //This is the only class where we should use to update the database.
 using Microsoft.EntityFrameworkCore;
-
+using Models;
 public class PostRepository : IPostRepository //IAggregateRoot
 {
     private readonly BisonDBContext _context;
