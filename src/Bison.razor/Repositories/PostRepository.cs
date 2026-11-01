@@ -62,6 +62,20 @@ public Taxon? GetTaxonById(int id)
     return _context.Taxons.Find(id);
 }
 
+IEnumerable<Observation> GetAllObservations(int page = 1){
+        int pagesize = 32;
+        int offset = (page - 1) * pagesize;
+
+        return _context.Observations
+            .Include(p => p.Author)
+            .Include(p => p.TaxonId)
+            .OrderBy(p => p.PostId)
+            .Skip(offset)
+            .Take(pagesize)
+            .ToList();
+    }
+}
+
     /*
     public async Task<T> GetObservations(int page = 1) => await ... ; //Consider using Observation instead of T 
     public async Task<T> GetObservationsFromAuthor(string author, int page = 1) => await ... ;
