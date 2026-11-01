@@ -1,5 +1,5 @@
 //Generic Interface for the Post Repository
-
+using Models;
 public interface  IPostRepository
 {
     IEnumerable<Post> GetAll(int page = 1);
