@@ -10,6 +10,8 @@ public interface IObservationService
     public List<ObservationViewModel> GetObservations(int page = 1);
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1);
     public ObservationDetailViewModel GetObservationDetailsById(int id, int page = 1);
+
+    public List<ObservationViewModel> GetFilteredObservations(int taxonId, int page = 1);
 }
 
 public class ObservationService : IObservationService
@@ -41,6 +43,11 @@ public class ObservationService : IObservationService
         var comments = (post as Observation)?.Comments?.ToList() ?? new List<Comment>(); //if this post is an Observation, get its comments, otherwise return an empty list.
         var proposals = (post as Observation)?.Proposals?.ToList() ?? new List<Proposal>(); 
             return new ObservationDetailViewModel(post.Author.Name, post.Text, post.TimeStamp.ToString(), comments, proposals);
+    }
+
+    public List<ObservationViewModel> GetFilteredObservations(string author, int page = 1)
+    {
+        
     }
 }
 
