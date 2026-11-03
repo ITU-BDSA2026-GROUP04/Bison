@@ -25,8 +25,14 @@ module Models{
             else filteredObs //if not just return the filteredObs
     }
 
-    //missing ensures clause for FilterBy function
+    //missing ensures (specifying) clause for FilterBy function, that is the postcondition that we promise to keep, 
+    //that is the output of FilterBy function is a sequence of observations that are either the root taxon or a subTaxon of the root taxon
+     
+    //Use (bool) predicate for the match condition, that is the taxon of the observation is either the root taxon or a subTaxon of the root taxon
+    
+    //mapping function to map the observations to their taxon, and then use the predicate to filter the observations based on their taxon
 
+    //Give wrapper same promises
     /*
     module Filter
 {
