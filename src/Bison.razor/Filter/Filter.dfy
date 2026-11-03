@@ -3,6 +3,7 @@
 
 //declaration from assignment week7
 
+
 module Models{
     class {:extern} Taxon {
         function {:extern} isSubTaxon(ancestor: Taxon): bool
@@ -23,6 +24,9 @@ module Models{
             then [obs[0]] + filteredObs //add the observation to the filtered obs
             else filteredObs //if not just return the filteredObs
     }
+
+    //missing ensures clause for FilterBy function
+
     /*
     module Filter
 {
