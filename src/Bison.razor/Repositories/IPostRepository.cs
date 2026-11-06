@@ -3,7 +3,7 @@ using Models;
 public interface  IPostRepository
 {
     IEnumerable<Post> GetAll(int page = 1);
-    IEnumerable<Post> GetByAuthor(string author, int page = 1);
+    IEnumerable<Observation> GetByAuthor(string author, int page = 1);
 
     IEnumerable<Observation> GetAllObservations(int page = 1);
     

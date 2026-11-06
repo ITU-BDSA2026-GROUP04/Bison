@@ -31,14 +31,15 @@ public IEnumerable<Post> GetAll(int page = 1)
             .ToList();
     }
 
-public IEnumerable<Post> GetByAuthor(string author, int page = 1)
+public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     //New getObservationsFromAuthor method from DBFacade.cs, but now using the DbContext and DbSet instead of raw SQL queries.
     {
         int pagesize = 32;
         int offset = (page - 1) * pagesize;
 
-        return _context.Posts
+        return _context.Observations
             .Include(p => p.Author)
+            .Include(p => p.Taxon)
             .Where(p => p.Author.Name == author)
             .Skip(offset)
             .Take(32)
