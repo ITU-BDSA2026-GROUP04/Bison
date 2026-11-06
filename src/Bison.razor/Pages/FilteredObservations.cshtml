@@ -1,0 +1,34 @@
+@page "/obs/taxons/{id:int}"
+@model Bison.Razor.Pages.FilteredObservationsModel
+@{
+    ViewData["Title"] = "Model";
+    Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("taxon");
+}
+
+<div>
+    <h2> Taxon </h2>
+
+    @if (Model.Observations.Any())
+    {
+        <ul id="messagelist" class="observations">
+            @foreach (ObservationViewModel obs in Model.Observations)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/obs/@obs.Author">@obs.Author</a>
+                        </strong>
+                        @obs.Message
+                        @obs.Taxon.VernacularName
+                        <small>&mdash; @obs.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no observations so far.</em>
+    }
+</div>

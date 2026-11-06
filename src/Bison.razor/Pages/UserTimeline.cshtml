@@ -21,6 +21,8 @@
                         </strong>
                         @ob.Message
                         <small>&mdash; @ob.Timestamp</small>
+                        <br />
+                        <small><a href="/obs/taxons/@ob.TaxonId">@(ob.Taxon?.VernacularName ?? "Unknown")</a></small>
                     </p>
                 </li>
             }
