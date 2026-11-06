@@ -24,7 +24,7 @@ public class ObservationService : IObservationService
     }
     public List<ObservationViewModel> GetObservations(int page = 1)
     {
-        return _repository.GetAll(page)
+        return _repository.GetAllObservations(page)
             .Select(p => new ObservationViewModel(p.Author.Name, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
     }
 
