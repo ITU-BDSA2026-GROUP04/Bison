@@ -6,33 +6,31 @@
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
 <body>
-<partial name="_LoginPartial" /> 
-<div class=navigation>
-    @if (User.Identity.IsAuthenticated)
+
+    <div class=page>
+    <h1><img src="/images/icon1.png" alt="Icon1"/>Bison</h1>
+
+    <div class=navigation>
+    @if (User.Identity.IsAuthenticated == true)
     {
-    <div>
-        <a href="/@(User.Identity.Name)">My Observations</a> |
-        <a href="/">Public Observations</a> |
+        <a href="/@(User.Identity.Name)">My Observations</a> 
+        <a href="/">Public Observations</a> 
         <a ... >Logout [@(User.Identity.Name)]</a>
-    </div>
     }
     else
     {
-    <div>
         <a href="/">Public Observations</a>
         <a>Register</a>
         <a>Login</a>
-    </div>
     }
+
 </div>
-<div class=page>
-    <h1><img src="/images/icon1.png" alt="Icon1"/>Bison</h1>
     <div class=body>
             @RenderBody()
     </div>
     <footer class="footer text-muted">
         <div class="container">
-            &copy; Bison &mdash; An ASP.NET Application Built from commit: 6218019819c4b8e8c8629b566b24713da9984e13
+            &copy; Bison &mdash; An ASP.NET Application
         </div>
     </footer>
 </div>
