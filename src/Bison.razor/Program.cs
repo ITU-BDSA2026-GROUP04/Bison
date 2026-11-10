@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using AspNet.Security.OAuth.GitHub;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,20 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
     .AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = "GitHub";
+    })
+.AddCookie()
+.AddGitHub(o =>
+{
+o.ClientId = builder.Configuration["authentication:github:clientId"];
+o.ClientSecret = builder.Configuration["authentication:github:clientSecret"];
+o.CallbackPath = "/signin-github";
+});
 
 
 var app = builder.Build();
@@ -43,6 +59,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication(); // HAVE to be after UseRouting() and before MapRazorPages()!!
 app.UseAuthorization();
 
