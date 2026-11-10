@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using AspNet.Security.OAuth.GitHub;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -9,7 +8,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddDbContext<BisonDBContext>(options =>
-    options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
+    options.UseSqlite("Data Source=/home/bison.db")); // Register EF Core with SQLite database
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
@@ -23,18 +22,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = "GitHub";
-    })
-.AddCookie()
+builder.Services.AddAuthentication()
 .AddGitHub(o =>
 {
-o.ClientId = builder.Configuration["authentication:github:clientId"];
-o.ClientSecret = builder.Configuration["authentication:github:clientSecret"];
-o.CallbackPath = "/signin-github";
+    o.ClientId = builder.Configuration["authentication:github:clientId"]!;
+    o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
+    o.CallbackPath = "/signin-github";
+    o.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
 });
 
 
