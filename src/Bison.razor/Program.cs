@@ -1,13 +1,35 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using AspNet.Security.OAuth.GitHub;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddDbContext<BisonDBContext>(options =>
     options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    })
+    .AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
+
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+
+builder.Services.AddAuthentication()
+.AddGitHub(o =>
+{
+    o.ClientId = builder.Configuration["authentication:github:clientId"]!;
+    o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
+    o.CallbackPath = "/signin-github";
+    o.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
+});
 
 
 var app = builder.Build();
@@ -31,6 +53,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication(); // HAVE to be after UseRouting() and before MapRazorPages()!!
+app.UseAuthorization();
 
 app.MapRazorPages();
 

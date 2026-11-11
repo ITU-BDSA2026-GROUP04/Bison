@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 using Models;
 
-public class BisonDBContext : DbContext
+public class BisonDBContext : IdentityDbContext<ApplicationUser>
 {
     public BisonDBContext(DbContextOptions<BisonDBContext> options) : base(options) { }
 
@@ -14,6 +16,8 @@ public class BisonDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Post>().UseTptMappingStrategy();
     }
     
