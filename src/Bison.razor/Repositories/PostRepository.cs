@@ -2,7 +2,7 @@
 //This is the repository layer, which is responsible for interacting with the database and returning data to the service layer.
 //This is the only class where we should use to update the database.
 using Microsoft.EntityFrameworkCore;
-
+using Models;
 public class PostRepository : IPostRepository //IAggregateRoot
 {
     private readonly BisonDBContext _context;
@@ -24,20 +24,22 @@ public IEnumerable<Post> GetAll(int page = 1)
 
         return _context.Posts
             .Include(p => p.Author)
+            .Include(p => p.Taxon)
             .OrderBy(p => p.PostId)
             .Skip(offset)
             .Take(pagesize)
             .ToList();
     }
 
-public IEnumerable<Post> GetByAuthor(string author, int page = 1)
+public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     //New getObservationsFromAuthor method from DBFacade.cs, but now using the DbContext and DbSet instead of raw SQL queries.
     {
         int pagesize = 32;
         int offset = (page - 1) * pagesize;
 
-        return _context.Posts
+        return _context.Observations
             .Include(p => p.Author)
+            .Include(p => p.Taxon)
             .Where(p => p.Author.Name == author)
             .Skip(offset)
             .Take(32)
@@ -51,7 +53,29 @@ public Post? GetById(int id)
         .Include(p => p.Author)
         .Include(p => p.Comments)
             .ThenInclude(c => c.Author)
+        .Include(p => p.Proposals)
+            .ThenInclude(pr => pr.Author)
         .FirstOrDefault(p => p.PostId == id);
+}
+
+public Taxon? GetTaxonById(int id)
+    //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
+{
+    return _context.Taxons.Find(id);
+}
+
+public IEnumerable<Observation> GetAllObservations(int page = 1){
+        int pagesize = 32;
+        int offset = (page - 1) * pagesize;
+
+        return _context.Observations
+            .Include(p => p.Author)
+            .Include(p => p.Taxon)
+            .OrderBy(p => p.PostId)
+            .Skip(offset)
+            .Take(pagesize)
+            .ToList();
+    }
 }
 
     /*
@@ -62,6 +86,6 @@ public Post? GetById(int id)
     public async Task<T> UnixTimeStampToDateTimeString(double unixTimeStamp) => await ... ;
     */
 
-}
+
 
 

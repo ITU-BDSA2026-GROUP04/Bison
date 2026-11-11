@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
+using Models;
 
 public class BisonDBContext : IdentityDbContext<ApplicationUser>
 {
