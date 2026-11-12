@@ -47,7 +47,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     }
 
     //New observation creation
-    public void CreateObservation(string text, string authorName, int taxonId, string? imageURL = null)
+    public void createObservation(string text, string authorName, int taxonId, string? imageURL = null)
     {
         //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
