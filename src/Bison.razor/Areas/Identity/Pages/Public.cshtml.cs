@@ -6,7 +6,17 @@ namespace Bison.Razor.Pages;
 public class PublicModel : PageModel
 {
     private readonly IObservationService _service;
-    public List<ObservationViewModel> Observations { get; set; } = new();
+    public List<ObservationViewModel> Observations { get; set; } = new(); //added the new() 
+
+    //Bind properties to connect HTML form inputs with PageModel 
+    [BindProperty]
+    public string Text {get; set; } = string.Empty;
+
+    [BindProperty]
+    public string? ImageURL{get; set; }
+    
+    [BindProperty]
+    public int TaxonId{get; set;} = 1;
 
 
     public PublicModel(IObservationService service)
