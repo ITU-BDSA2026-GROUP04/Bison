@@ -66,6 +66,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             ImageURL = imageURL
         };
 
+        //Add the observation to the database and save changes
         _context.Observations.Add(observation);
         _context.SaveChanges();
     }
