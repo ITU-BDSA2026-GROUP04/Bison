@@ -49,22 +49,25 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     //New observation creation
     public void CreateObservation(string text, string authorName, int taxonId, string? imageURL = null)
     {
+        //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
         if (author == null)
         {
             throw new Exception($"Author with name '{authorName}' not found.");
         }
         
+        //Create new observation and add it to the database
         var observation = new Observation
         {
             Text = text,
             Author = author,
-            //Timestamp = DateTime.UtcNow,
+            //Timestamp = DateTime.UtcNow, //Timestamp is already set in the Post constructor, so we don't need to set it here
             Taxon = _context.Taxons.Find(taxonId),
             ImageURL = imageURL
         };
-        //_context.Observations.Add(observation);
-        //_context.SaveChanges();
+
+        _context.Observations.Add(observation);
+        _context.SaveChanges();
     }
 
 public Post? GetById(int id)
