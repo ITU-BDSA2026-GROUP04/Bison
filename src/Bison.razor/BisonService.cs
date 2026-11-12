@@ -15,7 +15,8 @@ public interface IObservationService
 
     //For creating observations, comments and proposals
     public void createObservation(string text, string authorName, int taxonId, string? imageURL = null);
-
+    public void createComment(int postId, string text, string authorName); //Or observationId instead of postId?
+    public void createProposal(int postId, string text, string authorName); //Or observationId instead of postId?
 
 }
 
@@ -77,7 +78,27 @@ public class ObservationService : IObservationService
         }
         return result;
     }
+
+    //For creating observations, comments and proposals
+    public void createObservation(string text, string authorName, int taxonId, string? imageURL = null)
+    {
+        _repository.createObservation(text, authorName, taxonId, imageURL);
+    }
+
+    public void createComment(int postId, string text, string authorName)
+    {
+        _repository.createComment(postId, text, authorName);
+    }
+
+    public void createProposal(int postId, string text, string authorName)
+    {
+        _repository.createProposal(postId, text, authorName);
+    }
+
+
 }
+
+
 
     //Obsolete, now using DateTime.ToString() instead of converting to string manually.
 
