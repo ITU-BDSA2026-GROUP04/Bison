@@ -25,8 +25,12 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddAuthentication()
 .AddGitHub(o =>
 {
-    o.ClientId = builder.Configuration["authentication:github:clientId"]!;
-    o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
+    //o.ClientId = builder.Configuration["authentication:github:clientId"]!;
+    o.ClientId = builder.Configuration["authentication:github:clientId"]?? "default_client_id"; // Provide a default value if the configuration is missing
+
+    //o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
+    o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]?? "default_client_secret"; // Provide a default value if the configuration is missing
+
     o.CallbackPath = "/signin-github";
     o.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
 });
