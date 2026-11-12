@@ -46,6 +46,27 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             .ToList();
     }
 
+    //New observation creation
+    public void CreateObservation(string text, string authorName, int taxonId, string? imageURL = null)
+    {
+        var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
+        if (author == null)
+        {
+            throw new Exception($"Author with name '{authorName}' not found.");
+        }
+        
+        var observation = new Observation
+        {
+            Text = text,
+            Author = author,
+            //Timestamp = DateTime.UtcNow,
+            Taxon = _context.Taxons.Find(taxonId),
+            ImageURL = imageURL
+        };
+        //_context.Observations.Add(observation);
+        //_context.SaveChanges();
+    }
+
 public Post? GetById(int id)
     //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
 {
