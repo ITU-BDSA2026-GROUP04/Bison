@@ -1,6 +1,6 @@
  using System.Globalization;
  using Models;
-public record ObservationViewModel(string Author, string Message, string Timestamp, Taxon Taxon, int? TaxonId);
+public record ObservationViewModel(string Author, string Message, string Timestamp, Taxon Taxon, int? TaxonId, ImageURL = null);
 
 //public record Comment(string Author, string Message, string Timestamp); Obsolete, now using the Comment class from the Post.cs model instead of a separate record.
 public record ObservationDetailViewModel(string Author, string Message, string Timestamp, List<Comment> Comment, List<Proposal> Proposals);
@@ -12,6 +12,11 @@ public interface IObservationService
     public ObservationDetailViewModel GetObservationDetailsById(int id, int page = 1);
 
     public List<ObservationViewModel> GetFilteredObservations(int taxonId, int page = 1);
+
+    //For creating observations, comments and proposals
+    public void createObservation(string text, string authorName, int taxonId, string? imageURL = null);
+
+
 }
 
 public class ObservationService : IObservationService
