@@ -16,5 +16,5 @@ public interface  IPostRepository
 
     Taxon? GetTaxonById(int id);
 
-    Task<int> ObservationAsync(ObservationDTO dto); //DTO for new observation creation
+    //Task<int> ObservationAsync(ObservationDTO dto); //DTO for new observation creation
 }
