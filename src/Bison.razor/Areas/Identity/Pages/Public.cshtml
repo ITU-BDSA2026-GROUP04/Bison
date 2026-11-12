@@ -6,7 +6,15 @@
 }
 
 <div>
-    <h2> Public Timeline </h2>
+    <!--Public Timeline-->
+    <h2> Public Observations </h2>
+
+    <!--Observation box displayed for authenticated users-->
+    @if(User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        
+    }
+    
 
     @if (Model.Observations.Any())
     {
