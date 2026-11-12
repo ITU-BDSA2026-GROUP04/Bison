@@ -16,7 +16,9 @@
         <div class = "observationbox">
             <h3>What did you see, @(User.Identity.Name)?</h3>
             <form method="post">
-                <input style="float: left" type="text" asp-for="Text">
+                <input style="float: left" type="text" asp-for="Text" required>
+                <input type="text" asp-for="ImageURL" placeholder="Image URL (optional)" />
+                <input type="hidden" asp-for="TaxonId" value="1" />
                 <input type="submit" value="Share">
             </form>
         </div>
