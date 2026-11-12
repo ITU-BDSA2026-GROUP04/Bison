@@ -71,6 +71,67 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         _context.SaveChanges();
     }
 
+    //New comment creation
+    public void createComment(int observationId, string text, string authorName)
+    {
+        //Find author by name in the database, if not found, throw an exception
+        var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
+        if (author == null)
+        {
+            throw new Exception($"Author with name '{authorName}' not found.");
+        }
+
+        //Find the post by id in the database, if not found, throw an exception
+        var observation = _context.Observations.Find(observationId);
+        if (observation == null)
+        {
+            throw new Exception($"Observation with id '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+        }
+
+        //Create new comment and add it to the database
+        var comment = new Comment
+        {
+            Text = text,
+            Author = author,
+            Observation = observation,
+        };
+
+        //Add the comment to the database and save changes
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+    }
+
+
+    //New proposal creation
+    public void createProposal(int observationId, string text, string authorName)
+    {
+        //Find author by name in the database, if not found, throw an exception
+        var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
+        if (author == null)
+        {
+            throw new Exception($"Author with name '{authorName}' not found.");
+        }
+
+        //Find the post by id in the database, if not found, throw an exception
+        var observation = _context.Observations.Find(observationId);
+        if (observation == null)
+        {
+            throw new Exception($"Observation with id '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+        }
+
+        //Create new proposal and add it to the database
+        var proposal = new Proposal
+        {
+            Text = text,
+            Author = author,
+            Observation = observation,
+        };
+
+        //Add the proposal to the database and save changes
+        _context.Proposals.Add(proposal);
+        _context.SaveChanges();
+    }
+
 public Post? GetById(int id)
     //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
 {
