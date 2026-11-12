@@ -16,8 +16,10 @@ public interface  IPostRepository
 
     Taxon? GetTaxonById(int id);
 
-    //Added creation method for future observation
+    //Added creation method for future observation, comment and proposal creation
     void createObservation(string text, string authorName, int taxonId, string? imageURL = null);
+    void createComment(int postId, string text, string authorName); //Or observationId instead of postId?
+    void createProposal(int postId, string text, string authorName); //Or observationId instead of postId?
 
     //Task<int> ObservationAsync(ObservationDTO dto); //DTO for new observation creation
 }
