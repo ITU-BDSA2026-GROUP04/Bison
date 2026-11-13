@@ -37,6 +37,7 @@ var app = builder.Build();
 //seed the database
 using (var scope = app.Services.CreateScope()){
 var context = scope.ServiceProvider.GetRequiredService<BisonDBContext>();
+    context.Database.EnsureDeleted(); // Not sure this should stay when we change our database to not be tmp anymore, but it makes it work for now.
     context.Database.EnsureCreated();
     DbInitializer.SeedDatabase(context); //call the DbInitializer to seed the database with initial data
 }
@@ -49,7 +50,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // safety net: if HTTP ever arrives, send a 307 redirect to HTTPS
 app.UseStaticFiles();
 
 app.UseRouting();
