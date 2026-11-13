@@ -23,22 +23,27 @@ builder.Services.AddDefaultIdentity<Author>(options => { // Før ApplicationUser
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
 
-    }).AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
+}).AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
 
-// if (!disableExternalAuth){
 
+// -- Github Authentication 
+var githubClientId = builder.Configuration["authentication:github:clientId"];
+var githubClientSecret = builder.Configuration["authentication:github:clientSecret"];
+
+// Checks if either ClientId or ClientSecret are missing or empty (null, empty or whitespace) and only enables Authentication via Github if they are not
+bool githubEnabled = !string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret);
+var authBuilder = builder.Services.AddAuthentication(); // Default if github is not enabled
+
+if (githubEnabled) {
     builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
-        options.ClientId = builder.Configuration["authentication:github:clientId"]!;
-        options.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
+        options.ClientId = githubClientId!;
+        options.ClientSecret = githubClientSecret!;
         options.CallbackPath = "/signin-github";
         options.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
     });
-/*} else
-{
-    
-}*/
+}
 
 
 var app = builder.Build();
