@@ -23,10 +23,10 @@ builder.Services.AddDefaultIdentity<Author>(options => { // Før ApplicationUser
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
 
-}).AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
+}).AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type Author
 
 
-// -- Github Authentication 
+// Github Authentication  
 var githubClientId = builder.Configuration["authentication:github:clientId"];
 var githubClientSecret = builder.Configuration["authentication:github:clientSecret"];
 
