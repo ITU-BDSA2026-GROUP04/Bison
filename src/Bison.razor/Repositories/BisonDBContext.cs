@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 using Models;
 
-public class BisonDBContext : IdentityDbContext<ApplicationUser>
+public class BisonDBContext : IdentityDbContext<Author, IdentityRole<int>, int> // We are not actually using roles, but im not allowed to not add a role:// It should not be messing with anything else though, so maybe we can leave it??
 {
     public BisonDBContext(DbContextOptions<BisonDBContext> options) : base(options) { }
 
