@@ -46,14 +46,14 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             .ToList();
     }
 
-    //New observation creation
+    //New observation creation feature
     public void createObservation(string text, string authorName, int taxonId, string? imageURL = null)
     {
         //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
         if (author == null)
         {
-            throw new Exception($"Author with name '{authorName}' not found.");
+            throw new Exception($"Author: '{authorName}' not found.");
         }
         
         //Create new observation and add it to the database
@@ -71,21 +71,21 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         _context.SaveChanges();
     }
 
-    //New comment creation
+    //New comment creation feature
     public void createComment(int observationId, string text, string authorName)
     {
         //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
         if (author == null)
         {
-            throw new Exception($"Author with name '{authorName}' not found.");
+            throw new Exception($"Author: '{authorName}' not found.");
         }
 
         //Find the post by id in the database, if not found, throw an exception
         var observation = _context.Observations.Find(observationId);
         if (observation == null)
         {
-            throw new Exception($"Observation with id '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+            throw new Exception($"Observation: '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
         }
 
         //Create new comment and add it to the database
@@ -102,21 +102,21 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     }
 
 
-    //New proposal creation
+    //New proposal creation feature
     public void createProposal(int observationId, string text, string authorName)
     {
         //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
         if (author == null)
         {
-            throw new Exception($"Author with name '{authorName}' not found.");
+            throw new Exception($"Author: '{authorName}' not found.");
         }
 
         //Find the post by id in the database, if not found, throw an exception
         var observation = _context.Observations.Find(observationId);
         if (observation == null)
         {
-            throw new Exception($"Observation with id '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+            throw new Exception($"Observation: '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
         }
 
         //Create new proposal and add it to the database
