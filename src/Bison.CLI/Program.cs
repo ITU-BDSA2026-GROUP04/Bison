@@ -79,12 +79,13 @@ observeCommand.SetAction( async(ParseResult parseResult) =>
 });
 
 // comment command
-commentCommand.SetAction((ParseResult parseResult) =>
+commentCommand.SetAction(async (ParseResult parseResult) =>
 {
     int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id
     
     bool observationExists = false;
-    foreach(var o in observationDatabase.Read()) // checks if the observationid exists. 
+    IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+    foreach(var o in observations) // checks if the observationid exists. 
     {
         if (o.Id == observationId)
         {
@@ -104,8 +105,11 @@ commentCommand.SetAction((ParseResult parseResult) =>
     long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
 
     var comment = new Comment(observationId, Author, message, unixTimestamp); //formatting the comment for storage
-    commentDatabase.Store(comment);//storing the comment in the matching comment database
-    UserInterface.PrintObsvervationRecorded(message,""); //print confirmation using User Interface
+    //stores the comment in the database
+    HttpResponseMessage response = await client.PostAsJsonAsync("comment", comment);
+    response.EnsureSuccessStatusCode();
+    
+    UserInterface.PrintCommentRecorded(message,observationId); //print confirmation using User Interface
 });
 
 // discussion command
