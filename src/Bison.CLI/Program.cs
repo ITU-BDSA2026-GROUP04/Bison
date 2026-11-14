@@ -4,12 +4,16 @@ using CsvHelper;
 using CultureInfo = System.Globalization.CultureInfo;
 using SimpleDB;
 using System.CommandLine;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 //making a http client
-HttpClient client = new()
-{
-    BaseAddress = new Uri("http://localhost:5094") //this is set in the CSVDBService --> properties --> launchSettings.json
-};
+var baseURL = "http://localhost:5094";
+using HttpClient client = new();
+client.DefaultRequestHeaders.Accept.Clear();
+client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+client.BaseAddress = new Uri(baseURL);
 //initalising the database
 //multiple instances of singletons : Observations and Comments -> multiple databases
 ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
@@ -46,9 +50,10 @@ var rootCommand = new RootCommand("RootCommand")
 };
 
 //read observations from the database
-readCommand.SetAction((ParseResult parseResult) =>
+readCommand.SetAction(async (ParseResult parseResult) =>
 {
-    IEnumerable<Observation> observations = observationDatabase.Read();
+    IEnumerable<Observation>? observations = await client.GetFromJsonAsync<Observation>("observations");
+    //IEnumerable<Observation> observations = observationDatabase.Read();
     UserInterface.PrintCheeps(observations); //print using the User Interface
 });
 
