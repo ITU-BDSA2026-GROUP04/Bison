@@ -9,24 +9,20 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 //making a http client
-var baseURL = "http://localhost:5094";
+var baseURL = "http://localhost:5094"; //this is set in the Bison.CSVDBService --> properties --> launchsettings
 using HttpClient client = new();
 client.DefaultRequestHeaders.Accept.Clear();
 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 client.BaseAddress = new Uri(baseURL);
-//initalising the database
-//multiple instances of singletons : Observations and Comments -> multiple databases
-ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
-CommentDatabase<Comment> commentDatabase = CommentDatabase<Comment>.Instance;
 
 //initalising the commands to use as well as their descriptions
 var readCommand = new Command("read","read all observations");
-var observeCommand = new Command("observe", "Record an observation, the location should be written last");
+var observeCommand = new Command("observe", "Record an observation, the location should be written last and only one word");
 var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
 var locationCommand = new Command("location", "Displays all observation from this location");
 
-var observationArgument = new Argument<string[]>("message, the location should be written last");
+var observationArgument = new Argument<string[]>("message");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
@@ -147,7 +143,6 @@ locationCommand.SetAction(async (ParseResult parseResult) =>
         }
         
     }
-    UserInterface.PrintCheeps(observations); //print the list of observations with this location
 
     if (!locationExists)
     {
