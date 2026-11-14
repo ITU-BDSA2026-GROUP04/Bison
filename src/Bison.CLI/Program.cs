@@ -57,7 +57,7 @@ readCommand.SetAction(async (ParseResult parseResult) =>
 });
 
 //put an observation into the database
-observeCommand.SetAction((ParseResult parseResult) =>
+observeCommand.SetAction( async(ParseResult parseResult) =>
 {
         int Id = observationDatabase.Read().Count() + 1; // Works as long as observations are not removed
         string Author = Environment.UserName; //get the author
@@ -68,7 +68,10 @@ observeCommand.SetAction((ParseResult parseResult) =>
         
         
         var observation = new Observation(Id, Author, unixTimestamp, Message, Location); //format the observation for storage
-        observationDatabase.Store(observation); //actually store the observation
+        
+        //observationDatabase.Store(observation); //actually store the observation
+        HttpResponseMessage response = await client.PostAsJsonAsync("observation", observation);
+        response.EnsureSuccessStatusCode();
 
         UserInterface.PrintObsvervationRecorded(Message, Location); //print conformation using User Interface
 });
