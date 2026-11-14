@@ -129,13 +129,15 @@ discussionCommand.SetAction(async (ParseResult parseResult) =>
 });
 
 //Location command
-locationCommand.SetAction((ParseResult parseResult) =>
+locationCommand.SetAction(async (ParseResult parseResult) =>
 {
     string location = parseResult.GetRequiredValue(locationArgument);//get the matching location
     
     bool locationExists = false;
+    IEnumerable<Observation>? allObservations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+
     var observations = new List<Observation>(); //list to hold observations with the location
-    foreach(var o in observationDatabase.Read()) // checks if the location exists and adds to the list
+    foreach(var o in allObservations) // checks if the location exists and adds to the list
     {
         if (o.Location.Equals(location))
         {
