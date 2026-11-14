@@ -59,7 +59,9 @@ readCommand.SetAction(async (ParseResult parseResult) =>
 //put an observation into the database
 observeCommand.SetAction( async(ParseResult parseResult) =>
 {
-        int Id = observationDatabase.Read().Count() + 1; // Works as long as observations are not removed
+        //getting all obserations from the database
+        IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+        int Id = observations.Count() + 1; //Works as long as observations are not removed
         string Author = Environment.UserName; //get the author
         long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
         string[] observationArray = parseResult.GetRequiredValue(observationArgument); //get the message and location
@@ -69,7 +71,7 @@ observeCommand.SetAction( async(ParseResult parseResult) =>
         
         var observation = new Observation(Id, Author, unixTimestamp, Message, Location); //format the observation for storage
         
-        //observationDatabase.Store(observation); //actually store the observation
+        //stores the observation in the database
         HttpResponseMessage response = await client.PostAsJsonAsync("observation", observation);
         response.EnsureSuccessStatusCode();
 
