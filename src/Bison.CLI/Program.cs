@@ -5,6 +5,11 @@ using CultureInfo = System.Globalization.CultureInfo;
 using SimpleDB;
 using System.CommandLine;
 
+//making a http client
+HttpClient client = new()
+{
+    BaseAddress = new Uri("http://localhost:5094") //this is set in the CSVDBService --> properties --> launchSettings.json
+};
 //initalising the database
 //multiple instances of singletons : Observations and Comments -> multiple databases
 ObservationDatabase<Observation> observationDatabase = ObservationDatabase<Observation>.Instance;
