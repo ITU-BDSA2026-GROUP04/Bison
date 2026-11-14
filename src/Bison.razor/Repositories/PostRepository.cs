@@ -40,7 +40,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         return _context.Observations
             .Include(p => p.Author)
             .Include(p => p.Taxon)
-            .Where(p => p.Author.Name == author)
+            .Where(p => p.Author.UserName == author)
             .Skip(offset)
             .Take(32)
             .ToList();

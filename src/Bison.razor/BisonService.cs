@@ -25,14 +25,14 @@ public class ObservationService : IObservationService
     public List<ObservationViewModel> GetObservations(int page = 1)
     {
         return _repository.GetAllObservations(page)
-            .Select(p => new ObservationViewModel(p.Author.Name, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
+            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
     }
 
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1)
     {
         return _repository.GetByAuthor(author, page)
-            .Select(p => new ObservationViewModel(p.Author.Name, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
+            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
     }
 
     public ObservationDetailViewModel GetObservationDetailsById(int id, int page = 1)
@@ -42,7 +42,7 @@ public class ObservationService : IObservationService
         
         var comments = (post as Observation)?.Comments?.ToList() ?? new List<Comment>(); //if this post is an Observation, get its comments, otherwise return an empty list.
         var proposals = (post as Observation)?.Proposals?.ToList() ?? new List<Proposal>(); 
-            return new ObservationDetailViewModel(post.Author.Name, post.Text, post.TimeStamp.ToString(), comments, proposals);
+            return new ObservationDetailViewModel(post.Author.UserName, post.Text, post.TimeStamp.ToString(), comments, proposals);
     }
 
     public List<ObservationViewModel> GetFilteredObservations(int taxonId, int page = 1)
@@ -68,7 +68,7 @@ public class ObservationService : IObservationService
        var result = new List<ObservationViewModel> ();
        foreach(var ob in filteredObservations)
         {
-            result.Add(new ObservationViewModel(ob.Author.Name,ob.Text,ob.TimeStamp.ToString(), ob.Taxon, ob.TaxonId));
+            result.Add(new ObservationViewModel(ob.Author.UserName,ob.Text,ob.TimeStamp.ToString(), ob.Taxon, ob.TaxonId));
         }
         return result;
     }
