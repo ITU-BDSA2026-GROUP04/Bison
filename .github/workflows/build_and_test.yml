@@ -28,6 +28,7 @@ jobs:
 
     - name: Build
       run: dotnet build bison.sln --no-restore
+      
     - name: Test
       run: dotnet test bison.sln --no-build --verbosity normal
       
