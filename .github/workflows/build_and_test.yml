@@ -19,12 +19,15 @@ jobs:
       uses: dafny-lang/setup-dafny-action@v1
       with:
         dafny-version: '4.4.0'
+
     - name: Verify Dafny
       run: dafny verify src/Bison.razor/Filter/FilterWrapper.dfy
+
     - name: Restore dependencies
-      run: dotnet restore src/Bison.razor/Bison.Razor.csproj
+      run: dotnet restore bison.sln
+
     - name: Build
-      run: dotnet build src/Bison.razor/Bison.Razor.csproj --no-restore
+      run: dotnet build bison.sln --no-restore
     - name: Test
-      run: dotnet test src/Bison.razor/Bison.Razor.csproj --no-build --verbosity normal
+      run: dotnet test bison.sln --no-build --verbosity normal
       
