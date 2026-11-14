@@ -151,9 +151,13 @@ locationCommand.SetAction(async (ParseResult parseResult) =>
 
     if (!locationExists)
     {
-        UserInterface.PrintObsvervationRecorded("This location doesn't have any observations", ""); 
+        UserInterface.PrintNoLocation();
+        return;
 
     }
+    UserInterface.PrintCheeps(observations); //print the list of observations with this location
+
+    
 
 });
 //parses the input into a parseResult and invokes the action for the command
