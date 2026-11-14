@@ -52,8 +52,7 @@ var rootCommand = new RootCommand("RootCommand")
 //read observations from the database
 readCommand.SetAction(async (ParseResult parseResult) =>
 {
-    IEnumerable<Observation>? observations = await client.GetFromJsonAsync<Observation>("observations");
-    //IEnumerable<Observation> observations = observationDatabase.Read();
+    IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
     UserInterface.PrintCheeps(observations); //print using the User Interface
 });
 
