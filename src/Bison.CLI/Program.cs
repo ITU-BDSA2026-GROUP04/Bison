@@ -113,11 +113,18 @@ commentCommand.SetAction(async (ParseResult parseResult) =>
 });
 
 // discussion command
-discussionCommand.SetAction((ParseResult parseResult) =>
+discussionCommand.SetAction(async (ParseResult parseResult) =>
 {
     int observationId = parseResult.GetRequiredValue(discussionIdArgument);//get the matching observation Id
 
-    IEnumerable<Comment> comments = commentDatabase.Read().Where(c => c.ObservationId == observationId); //get all comments matching the observation Id
+    IEnumerable<Comment>? comments = await client.GetFromJsonAsync<IEnumerable<Comment>>($"comments?id={observationId}");
+    
+    if (!comments.Any())
+    {
+        UserInterface.PrintNoComments();
+        return;
+
+    }
     UserInterface.PrintCheeps(comments);
 });
 
