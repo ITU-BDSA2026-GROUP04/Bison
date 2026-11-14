@@ -16,7 +16,7 @@ public static void PrintCheeps(IEnumerable<Cheep> cheeps)
           foreach(Cheep cheep in cheeps)
           {
             String formattedDate = FormattedUnixTime(cheep.Timestamp);
-              Console.WriteLine($"{cheep.Author} @ {formattedDate}: {cheep.Message}:");
+              Console.WriteLine($"{cheep.Author} @ {formattedDate}: {cheep.Message}");
         }
     }
 //formatting
@@ -31,9 +31,24 @@ public static void PrintInvalidCommand()
         Console.WriteLine("Please provide a command");
     }
 
+
+public static void PrintNoComments()
+    {
+        Console.WriteLine("There exists no comment to this observation");
+    }
+
+public static void PrintNoLocation()
+    {
+        Console.WriteLine("There exists no observation with this location");
+    }
 public static void PrintObsvervationRecorded(string Message, string Location)
     {
         Console.WriteLine("Observation: \"" + Message + "\" recorded at " + Location); 
+    }
+
+public static void PrintCommentRecorded(string Message, int id)
+    {
+        Console.WriteLine("Comment: \"" + Message + "\" commented on observation " + id); 
     }
 
 public static string FormattedUnixTime(long unixTimestamp)
