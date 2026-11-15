@@ -32,14 +32,26 @@ class Tree
         IEnumerable<Taxon> fileData = reader.ReadAll();
 
         foreach (var taxon in fileData) {
-            taxonMap.Add(taxon.taxonID, taxon);
-            taxonMap.Add(taxon.vernacularName, taxon);
+            taxonMap[taxon.taxonID] = taxon;
+            taxonMap[taxon.vernacularName] = taxon;
 
             //if the key ID exists then put in itself in the addtochildren
             if (taxonMap.ContainsKey(taxon.parentNameUsageID))
             {
-                taxon.setSuper(taxonMap[taxon.parentNameUsageID]);
-                taxonMap[taxon.parentNameUsageID].addSub(taxon);
+                taxonMap[taxon.taxonID].setSuper(taxonMap[taxon.parentNameUsageID]); //set super taxon
+                taxonMap[taxon.parentNameUsageID].addSub(taxon); //add this taxon to the super's sublist
+            }
+        }
+
+        foreach(var pair in taxonMap)
+        {
+            Console.WriteLine("name: " + pair.Value?.vernacularName + ", ID: " + pair.Value?.taxonID + ", Super: " + pair.Value?.getSuper()?.taxonID + " ChildrenAmount: " + pair.Value?.getSub()?.Count());
+            if (pair.Value.getSub().Any())
+            {
+                foreach(var child in pair.Value.getSub())
+                {
+                    Console.WriteLine(child.vernacularName);
+                }
             }
         }
 

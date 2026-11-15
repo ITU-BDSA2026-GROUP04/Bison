@@ -4,7 +4,7 @@ public record Taxon
 {
     public string taxonID;
     public Taxon super;
-    public List<Taxon> subs;
+    public List<Taxon> subs = new List<Taxon>();
 
     public string parentNameUsageID;
 
