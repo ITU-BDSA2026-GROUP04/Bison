@@ -36,7 +36,8 @@ locationCommand.Add(locationArgument);
 	// - Observe Command
 	    //- messageArgument
 
-Tree.Insert();
+Tree tree = new Tree();
+tree.insert();
 
 var rootCommand = new RootCommand("RootCommand")
 {

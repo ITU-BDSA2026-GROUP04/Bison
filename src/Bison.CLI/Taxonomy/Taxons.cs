@@ -2,33 +2,37 @@ using CsvHelper;
 
 public record Taxon
 {
-    int taxon_id;
-    Taxon super;
-    List<Taxon> subs;
+    public string taxonID;
+    public Taxon super;
+    public List<Taxon> subs;
 
-    string vernacularName;
+    public string parentNameUsageID;
 
-    void setSuper(Taxon super)
+    public string vernacularName;
+    public string scientificName;
+    public string taxonRank;
+
+    public void setSuper(Taxon super)
     {
         this.super = super;
     }
 
-    void addSub(Taxon sub)
+    public void addSub(Taxon sub)
     {
         subs.Add(sub);
     }
 
-    void setVernacularName(string vernacularName)
+    public void setVernacularName(string vernacularName)
     {
         this.vernacularName = vernacularName;
     }
 
-    Taxon getSuper()
+    public Taxon getSuper()
     {
         return super;
     }
 
-    List<Taxon> getSub()
+    public List<Taxon> getSub()
     {
        return subs; 
     }
