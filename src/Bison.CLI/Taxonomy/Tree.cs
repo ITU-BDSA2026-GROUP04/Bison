@@ -38,6 +38,7 @@ class Tree
             //if the key ID exists then put in itself in the addtochildren
             if (taxonMap.ContainsKey(taxon.parentNameUsageID))
             {
+                taxon.setSuper(taxonMap[taxon.parentNameUsageID]);
                 taxonMap[taxon.parentNameUsageID].addSub(taxon);
             }
         }
