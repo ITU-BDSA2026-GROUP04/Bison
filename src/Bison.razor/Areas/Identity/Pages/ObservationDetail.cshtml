@@ -28,7 +28,7 @@
             <ul>
             @foreach(var comment in Model.Observations.Comment)
                 {
-                   <li>@comment.Author.Name: @comment.Text</li>
+                   <li>@comment.Author.UserName: @comment.Text</li>
                 }  
             </ul>
         }
@@ -55,7 +55,7 @@
                 <ul>
                     @foreach(var proposal in Model.Observations.Proposals)
                 {
-                   <li>@proposal.Author.Name: @proposal.Text</li>
+                   <li>@proposal.Author.UserName: @proposal.Text</li>
                 } 
                 </ul>
             }
