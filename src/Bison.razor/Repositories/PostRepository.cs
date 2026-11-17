@@ -111,7 +111,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         {
             throw new Exception($"Author: '{authorName}' not found.");
         }
-
+ //Har jeg måske lavet rod her? byttet på obs og post? idk det finde rjeg lige ud af men gemmer den her commit
         //Find the post by id in the database, if not found, throw an exception
         var observation = _context.Observations.Find(observationId);
         if (observation == null)
