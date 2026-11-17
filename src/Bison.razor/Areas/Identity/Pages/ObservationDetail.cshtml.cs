@@ -8,7 +8,7 @@ public class ObservationDetailModel : PageModel
     private readonly IObservationService _service;
     public ObservationDetailViewModel Observations { get; set; }
 
-    //Adding Bind properties: coupling data with the UI
+    //Adding Bind properties: coupling data with the UI for flow
     [BindProperty]
     public string comment {get; set;} = string.Empty; //the comment text
 
