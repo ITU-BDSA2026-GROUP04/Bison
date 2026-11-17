@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Bison.Razor.Pages;
 
@@ -29,4 +31,27 @@ public class PublicModel : PageModel
         Observations = _service.GetObservations(page);
         return Page();
     }
+ 
+    //New; cause noting was working once clicked share -> might be because this was missing
+    public ActionResult OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+            Observations = _service.GetObservations(1); //Reloading the timeline
+            return Page();
+        }
+
+        var authorName = User.Identity?.Name; //This is what the user writes
+
+        if (string.IsNullOrEmpty(authorName)) //Extra precaution
+        {
+            return RedirectToPage(); 
+        }
+
+        _service.createObservation(Text, authorName, TaxonId, ImageURL);
+        return RedirectToPage();
+
+    }
+
+
 }
