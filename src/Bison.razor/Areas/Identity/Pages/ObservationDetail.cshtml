@@ -28,7 +28,7 @@
             <ul>
             @foreach(var comment in Model.Observations.Comment)
                 {
-                   <li>@Comment.Author.Name: @Comment.Text</li>
+                   <li>@comment.Author.Name: @comment.Text</li>
                 }  
             </ul>
         }
@@ -42,7 +42,7 @@
             <div class="observationbox" style="margin-top: 20px;">
                 <h4>Add a comment</h4>
                 <form method="post" asp-page-handler="Comment" asp-route-id="@RouteData.Values["id"]">
-                    <input type="text" asp-for="CommentText" placeholder="Write a comment..." required />
+                    <input type="text" asp-for="comment" placeholder="Comment..." required />
                     <input type="submit" value="Comment" />
                 </form>
             </div>
@@ -50,7 +50,38 @@
 
     <!--Proposal-->
     <h3>Proposals<h3/>
-    <></>
+    @if (Model.Observations.Proposals.Any())
+            {
+                <ul>
+                    @foreach(var proposal in Model.Observations.Proposals)
+                {
+                   <li>@proposal.Author.Name: @proposal.Text</li>
+                } 
+                </ul>
+            }
+            else
+            {
+                <em>No proposals</em>
+            }
+
+
+
+    @if(User.Identity?.IsAuthenticated == true)
+        {
+            <div class="observationbox" style="margin-top: 20px;">
+                <h4>Add proposal</h4>
+                <form method="post" asp-page-handler="Proposal" asp-route-id="@RouteData.Values["id"]">
+                    <input type="text" asp-for="proposal" placeholder="Proposals..." required />
+                    <input type="submit" value="Propose" />
+                </form>
+            </div>
+        }
+
+else{
+    <em>No observations</em>
+}
+</div>
+
     
 
     @if (!Model.Observations.Message.Equals(""))
