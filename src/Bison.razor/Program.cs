@@ -1,35 +1,49 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AspNet.Security.OAuth.GitHub;
+using Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
 builder.Services.AddScoped<IObservationService, ObservationService>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+
 builder.Services.AddDbContext<BisonDBContext>(options =>
     options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
+builder.Services.AddDefaultIdentity<Author>(options => { // Før ApplicationUser
+
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
-    })
-    .AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type ApplicationUser
 
-builder.Services.AddScoped<IPostRepository, PostRepository>();
+}).AddEntityFrameworkStores<BisonDBContext>(); // Adds the identity services to the DI container and uses user type Author
 
-builder.Services.AddAuthentication()
-.AddGitHub(o =>
-{
-    o.ClientId = builder.Configuration["authentication:github:clientId"]!;
-    o.ClientSecret = builder.Configuration["authentication:github:clientSecret"]!;
-    o.CallbackPath = "/signin-github";
-    o.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
-});
+
+// Github Authentication  
+var githubClientId = builder.Configuration["authentication:github:clientId"];
+var githubClientSecret = builder.Configuration["authentication:github:clientSecret"];
+
+// Checks if either ClientId or ClientSecret are missing or empty (null, empty or whitespace) and only enables Authentication via Github if they are not
+bool githubEnabled = !string.IsNullOrWhiteSpace(githubClientId) && !string.IsNullOrWhiteSpace(githubClientSecret);
+var authBuilder = builder.Services.AddAuthentication(); // Default if github is not enabled
+
+if (githubEnabled) {
+    builder.Services.AddAuthentication()
+    .AddGitHub(options =>
+    {
+        options.ClientId = githubClientId!;
+        options.ClientSecret = githubClientSecret!;
+        options.CallbackPath = "/signin-github";
+        options.SignInScheme = IdentityConstants.ExternalScheme; // hand the GitHub login to Identity's external-login flow
+    });
+}
 
 
 var app = builder.Build();
