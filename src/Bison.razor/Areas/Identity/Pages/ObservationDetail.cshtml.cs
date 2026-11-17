@@ -26,5 +26,27 @@ public class ObservationDetailModel : PageModel
         return Page();
     }
 
+    //Comment handler:
+    public ActionResult PostComment(int id)
+    {
+        if (User.Identity == null || !User.Identity.IsAuthenticated) // String.IsNullOrEmpty //Or WhiteSpace?? 
+        {
+            return RedirectToPage(new {id});
+        }
+        _service.createComment(id, comment, User.Identity.Name!);
+        return RedirectToPage(new {id});
+    }
+
+
+    //Proposal Handler:
+    public ActionResult PostProposal(int id)
+    {
+         if (User.Identity == null || !User.Identity.IsAuthenticated) //String.IsNullOrEmpty //Or WhiteSpace?? 
+        {
+            return RedirectToPage(new {id});
+        }
+        _service.createComment(id, proposal, User.Identity.Name!);
+        return RedirectToPage(new {id});
+    }
 
 }
