@@ -1,0 +1,43 @@
+﻿@page "/obs/{author}"
+@model Bison.Web.Pages.UserTimelineModel
+@{
+    ViewData["Title"] = "Bison";
+    Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("author");
+}
+
+<div>
+    <h2> @routeName's Observations </h2>
+
+    @if (Model.Observations.Any())
+    {
+        <ul id="messagelist" class="observations">
+            @foreach (var ob in Model.Observations)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/@ob.Author">@ob.Author</a>
+                        </strong>
+                        @ob.Message
+
+                        @if(!string.IsNullOrEmpty(ob.ImageURL))
+                        {
+                            <br/>
+                            <img src="@ob.ImageURL" alt="Observation picture" style="max-width: 250px;" />
+
+                        }
+                        
+                        <small>&mdash; @ob.Timestamp</small>
+                        <br />
+                        <small><a href="/obs/taxons/@ob.TaxonId">@(ob.Taxon?.VernacularName ?? "Unknown")</a></small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no Observations so far.</em>
+    }
+</div>
