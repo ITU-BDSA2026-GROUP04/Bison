@@ -28,14 +28,15 @@ var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
 var locationArgument = new Argument<string>("Location");
-var proposalIdArgument = new Argument<string>("Proposal");
+var proposalTaxonIdArgument = new Argument<string>("Proposal");
 
 observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
 locationCommand.Add(locationArgument);
-proposalCommand.Add(proposalIdArgument);
+proposalCommand.Add(proposalTaxonIdArgument);
+proposalCommand.Add(observationIdArgument);
 
 
 //establishing Root and subcommands "hierarchy"
@@ -45,11 +46,11 @@ proposalCommand.Add(proposalIdArgument);
 	    //- messageArgument
 
 Tree tree = new Tree();
-tree.insert();
+tree.create();
 
 var rootCommand = new RootCommand("RootCommand")
 {
-    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand}
+    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand, proposalCommand}
 };
 
 //read observations from the database
@@ -135,9 +136,16 @@ discussionCommand.SetAction(async (ParseResult parseResult) =>
 proposalCommand.SetAction(async (ParseResult parseResult) =>
 {
     int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id
-    
+    string TaxonId = parseResult.GetRequiredValue(proposalTaxonIdArgument); //get the taxonID
+
+    if (!tree.exists(TaxonId))
+    {
+        UserInterface.PrintNoTaxonId();
+        return;
+    }
     bool observationExists = false;
     IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+    
     foreach(var o in observations) // checks if the observationid exists. 
     {
         if (o.Id == observationId)
@@ -153,16 +161,16 @@ proposalCommand.SetAction(async (ParseResult parseResult) =>
         return; // Returns such that the comment isn't saved
     }
 
-    string TaxonId = parseResult.GetRequiredValue(proposalIdArgument); //get the message
     string Author = Environment.UserName; //get the author
     long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
+    
 
-    var proposal = new Comment(observationId, Author, TaxonId, unixTimestamp); //formatting the comment for storage
-    //stores the comment in the database
+    var proposal = new Proposal(observationId, Author, unixTimestamp, TaxonId); //formatting the comment for storage
+    //stores the proposal in the database
     HttpResponseMessage response = await client.PostAsJsonAsync("proposal", proposal);
     response.EnsureSuccessStatusCode();
     
-    UserInterface.PrintCommentRecorded(TaxonId,observationId); //print confirmation using User Interface
+    UserInterface.PrintProposalRecorded(TaxonId,observationId); //print confirmation using User Interface
 });
 
 

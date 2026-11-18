@@ -37,6 +37,11 @@ public static void PrintNoComments()
         Console.WriteLine("There exists no comment to this observation");
     }
 
+public static void PrintNoTaxonId()
+    {
+        Console.WriteLine("There exists no Taxon with this ID");
+    }
+
 public static void PrintNoLocation()
     {
         Console.WriteLine("There exists no observation with this location");
@@ -59,5 +64,11 @@ public static string FormattedUnixTime(long unixTimestamp)
         
     }
 
-}
 
+
+public static void PrintProposalRecorded(string TaxonId, int id)
+    {
+        Console.WriteLine("Proposal of TaxonId: \"" + TaxonId + "\" made on observation " + id); 
+    }
+
+}

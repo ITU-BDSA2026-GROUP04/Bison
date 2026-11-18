@@ -1,7 +1,9 @@
+using System.Net;
+
 public record Proposal
 (
     int ObservationId, 
     string Author, 
-    string taxonID, 
-    long Timestamp
-);
+    long Timestamp, 
+    string TaxonId
+): Cheep(Author, Timestamp, TaxonId);

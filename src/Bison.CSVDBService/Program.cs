@@ -5,6 +5,7 @@ var app = builder.Build();
 
 var observationDb = ObservationDatabase<Observation>.Instance;
 var commentDb = CommentDatabase<Comment>.Instance;
+var proposalDb = ProposalDatabase<Proposal>.Instance;
 
 //Get observations. Use our existing Read method to return all observations in the database
 app.MapGet("/observations", () => observationDb.Read());
@@ -26,6 +27,13 @@ app.MapGet("/comments", (int id) =>
 app.MapPost("/comment", (Comment comment) =>
 {
     commentDb.Store(comment);
+    return Results.Ok();
+});
+
+//Post proposal. Use our existing Store method to add a comment to the database
+app.MapPost("/proposal", (Proposal proposal) =>
+{
+    proposalDb.Store(proposal);
     return Results.Ok();
 });
 

@@ -20,8 +20,8 @@ class Tree
 
 {
     public Dictionary<string,Taxon> taxonMap = new Dictionary<string, Taxon>(); //make a map for taxons
-    Taxon root = new Taxon();
-    public void insert()
+
+    public void create()
     {
         CsvReader<Taxon> reader = new (
        fullPath: "Taxonomy/joined.csv", 
@@ -43,17 +43,18 @@ class Tree
             }
         }
 
-        foreach(var pair in taxonMap)
-        {
-            Console.WriteLine("name: " + pair.Value?.vernacularName + ", ID: " + pair.Value?.taxonID + ", Super: " + pair.Value?.getSuper()?.taxonID + " ChildrenAmount: " + pair.Value?.getSub()?.Count());
-            if (pair.Value.getSub().Any())
-            {
-                foreach(var child in pair.Value.getSub())
-                {
-                    Console.WriteLine(child.vernacularName);
-                }
-            }
-        }
+        
 
+    }
+
+    public bool exists(string TaxonId)
+    {
+        if (taxonMap.ContainsKey(TaxonId))
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 }
