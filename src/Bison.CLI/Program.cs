@@ -21,18 +21,21 @@ var observeCommand = new Command("observe", "Record an observation, the location
 var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
 var locationCommand = new Command("location", "Displays all observation from this location");
+var proposalCommand = new Command("proposal", "Add a proposal to an observation");
 
 var observationArgument = new Argument<string[]>("message");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
 var locationArgument = new Argument<string>("Location");
+var proposalArgument = new Argument<string>("Proposal");
 
 observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
 locationCommand.Add(locationArgument);
+proposalCommand.Add(proposalArgument);
 
 
 //establishing Root and subcommands "hierarchy"
@@ -127,6 +130,8 @@ discussionCommand.SetAction(async (ParseResult parseResult) =>
     }
     UserInterface.PrintCheeps(comments);
 });
+
+
 
 //Location command
 locationCommand.SetAction(async (ParseResult parseResult) =>
