@@ -28,14 +28,14 @@ var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
 var discussionIdArgument = new Argument<int>("observation-id");
 var locationArgument = new Argument<string>("Location");
-var proposalArgument = new Argument<string>("Proposal");
+var proposalIdArgument = new Argument<string>("Proposal");
 
 observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
 commentCommand.Add(observationIdArgument);
 discussionCommand.Add(discussionIdArgument);
 locationCommand.Add(locationArgument);
-proposalCommand.Add(proposalArgument);
+proposalCommand.Add(proposalIdArgument);
 
 
 //establishing Root and subcommands "hierarchy"
@@ -130,6 +130,41 @@ discussionCommand.SetAction(async (ParseResult parseResult) =>
     }
     UserInterface.PrintCheeps(comments);
 });
+
+//proposal command
+proposalCommand.SetAction(async (ParseResult parseResult) =>
+{
+    int observationId = parseResult.GetRequiredValue(observationIdArgument);//get the matching observation Id
+    
+    bool observationExists = false;
+    IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+    foreach(var o in observations) // checks if the observationid exists. 
+    {
+        if (o.Id == observationId)
+        {
+            observationExists = true;
+            break;
+        }
+    }
+
+    if (!observationExists)
+    {
+        UserInterface.PrintObsvervationRecorded("This observation doesn't exist", ""); 
+        return; // Returns such that the comment isn't saved
+    }
+
+    string TaxonId = parseResult.GetRequiredValue(proposalIdArgument); //get the message
+    string Author = Environment.UserName; //get the author
+    long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
+
+    var proposal = new Comment(observationId, Author, TaxonId, unixTimestamp); //formatting the comment for storage
+    //stores the comment in the database
+    HttpResponseMessage response = await client.PostAsJsonAsync("proposal", proposal);
+    response.EnsureSuccessStatusCode();
+    
+    UserInterface.PrintCommentRecorded(TaxonId,observationId); //print confirmation using User Interface
+});
+
 
 
 
