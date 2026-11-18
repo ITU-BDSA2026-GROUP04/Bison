@@ -37,5 +37,13 @@ app.MapPost("/proposal", (Proposal proposal) =>
     return Results.Ok();
 });
 
+//Get proposals. Use our existing Read method to return all proposals in the database, but filter by observation id
+app.MapGet("/proposals", (int id) => 
+{
+    return proposalDb.Read().Where(c => c.ObservationId == id);
+});
+
+
+
 app.Run();
 

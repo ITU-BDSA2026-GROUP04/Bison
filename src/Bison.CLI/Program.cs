@@ -22,13 +22,15 @@ var commentCommand = new Command("comment", "Add a comment to an observation");
 var discussionCommand = new Command("discussion", "List all comments for a given observation");
 var locationCommand = new Command("location", "Displays all observation from this location");
 var proposalCommand = new Command("proposal", "Add a proposal to an observation");
+var proposalsCommand = new Command("proposals", "List all proposals to an observation");
 
 var observationArgument = new Argument<string[]>("message");
 var observationIdArgument = new Argument<int>("observation-id");
 var commentMessageArgument = new Argument<string>("comment-message");
-var discussionIdArgument = new Argument<int>("observation-id");
+var discussionIdArgument = new Argument<int>("observation id");
 var locationArgument = new Argument<string>("Location");
 var proposalTaxonIdArgument = new Argument<string>("Proposal");
+var proposalsIdArgument = new Argument<int>("observation id");
 
 observeCommand.Add(observationArgument);
 commentCommand.Add(commentMessageArgument);
@@ -37,6 +39,7 @@ discussionCommand.Add(discussionIdArgument);
 locationCommand.Add(locationArgument);
 proposalCommand.Add(proposalTaxonIdArgument);
 proposalCommand.Add(observationIdArgument);
+proposalsCommand.Add(proposalsIdArgument);
 
 
 //establishing Root and subcommands "hierarchy"
@@ -50,7 +53,7 @@ tree.create();
 
 var rootCommand = new RootCommand("RootCommand")
 {
-    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand, proposalCommand}
+    Subcommands = {readCommand, observeCommand, commentCommand, discussionCommand, locationCommand, proposalCommand, proposalsCommand}
 };
 
 //read observations from the database
@@ -130,6 +133,22 @@ discussionCommand.SetAction(async (ParseResult parseResult) =>
 
     }
     UserInterface.PrintCheeps(comments);
+});
+
+// discussion command
+discussionCommand.SetAction(async (ParseResult parseResult) =>
+{
+    int observationId = parseResult.GetRequiredValue(proposalsIdArgument);//get the matching observation Id
+
+    IEnumerable<Proposal>? proposals = await client.GetFromJsonAsync<IEnumerable<Proposal>>($"proposal?id={observationId}");
+    
+    if (!proposals.Any())
+    {
+        UserInterface.PrintNoProposals();
+        return;
+
+    }
+    UserInterface.PrintCheeps(proposals);
 });
 
 //proposal command

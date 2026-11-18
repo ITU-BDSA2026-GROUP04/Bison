@@ -36,6 +36,10 @@ public static void PrintNoComments()
     {
         Console.WriteLine("There exists no comment to this observation");
     }
+public static void PrintNoProposals()
+    {
+        Console.WriteLine("There exists no proposals to this observation");
+    }
 
 public static void PrintNoTaxonId()
     {
