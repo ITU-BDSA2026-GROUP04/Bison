@@ -1,6 +1,7 @@
 //BisonService calls methods from here, to fetch data from the database. 
 //This is the repository layer, which is responsible for interacting with the database and returning data to the service layer.
 //This is the only class where we should use to update the database.
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.EntityFrameworkCore;
 using Models;
 public class PostRepository : IPostRepository //IAggregateRoot
@@ -51,10 +52,21 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     {
         //Find author by name in the database, if not found, throw an exception
         var author = _context.Authors.FirstOrDefault(a => a.UserName == authorName || a.Email == authorName); //Newly added a.Email for more flexible search
-        if (author == null)
+        if (author == null) //Or do something else?? like create perhaps
         {
-            throw new Exception($"Author: '{authorName}' not found.");
+            author = new Author
+            {
+                UserName = authorName,
+                Email = authorName,
+                //Name = authorName
+            };
+            _context.Authors.Add(author);
+        _context.SaveChanges();
+
+            //throw new Exception($"Author: '{authorName}' not found.");
         }
+
+        var taxon = _context.Taxons.Find(taxonId);
         
         //Create new observation and add it to the database
         var observation = new Observation
@@ -62,7 +74,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             Text = text,
             Author = author,
             //Timestamp = DateTime.UtcNow, //Timestamp is already set in the Post constructor, so we don't need to set it here
-            Taxon = _context.Taxons.Find(taxonId),
+            Taxon = taxon,
             ImageURL = imageURL
         };
 
