@@ -76,7 +76,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         {
             Text = text,
             Author = author,
-            //Timestamp = DateTime.UtcNow, //Timestamp is already set in the Post constructor, so we don't need to set it here
+            TimeStamp = DateTime.UtcNow,  //Adding timestamp as in Post.cs its just set to standard 01/01/0001 00:00:00
             Taxon = taxon,
             ImageURL = imageURL
         };
