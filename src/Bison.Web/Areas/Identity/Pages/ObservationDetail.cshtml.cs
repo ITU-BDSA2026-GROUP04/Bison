@@ -28,7 +28,7 @@ public class ObservationDetailModel : PageModel
     }
 
     //Comment handler:
-    public ActionResult PostComment(int id)
+    public ActionResult OnPostComment(int id)
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) // String.IsNullOrEmpty //Or WhiteSpace?? 
         {
@@ -40,13 +40,13 @@ public class ObservationDetailModel : PageModel
 
 
     //Proposal Handler:
-    public ActionResult PostProposal(int id)
+    public ActionResult OnPostProposal(int id)
     {
          if (User.Identity == null || !User.Identity.IsAuthenticated) //String.IsNullOrEmpty //Or WhiteSpace?? 
         {
             return RedirectToPage(new {id});
         }
-        _service.createComment(id, proposal, User.Identity.Name!);
+        _service.createProposal(id, proposal, User.Identity.Name!);
         return RedirectToPage(new {id});
     }
 
