@@ -148,7 +148,6 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     }
 
 public Post? GetById(int id)
-    //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
 {
     return _context.Observations
         .Include(p => p.Author)
@@ -160,7 +159,6 @@ public Post? GetById(int id)
 }
 
 public Taxon? GetTaxonById(int id)
-    //New getObservationDetailsById method from DBFacade.cs blah blah blah same thing as above.
 {
     return _context.Taxons.Find(id);
 }
