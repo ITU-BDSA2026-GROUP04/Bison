@@ -109,6 +109,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             Text = text,
             Author = author,
             Observation = observation,
+            TimeStamp = DateTime.UtcNow
         };
 
         //Add the comment to the database and save changes
@@ -140,6 +141,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             Text = text,
             Author = author,
             Observation = observation,
+            TimeStamp = DateTime.UtcNow
         };
 
         //Add the proposal to the database and save changes
