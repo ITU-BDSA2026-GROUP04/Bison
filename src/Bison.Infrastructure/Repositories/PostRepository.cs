@@ -122,12 +122,12 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     public void createProposal(int observationId, string text, string authorName)
     {
         //Find author by name in the database, if not found, throw an exception
-        var author = _context.Authors.FirstOrDefault(a => a.UserName == authorName);
+        var author = _context.Authors.FirstOrDefault(a => a.UserName == authorName || a.Email == authorName);
         if (author == null)
         {
             throw new Exception($"Author: '{authorName}' not found.");
         }
- //Har jeg måske lavet rod her? byttet på obs og post? idk det finde rjeg lige ud af men gemmer den her commit
+
         //Find the post by id in the database, if not found, throw an exception
         var observation = _context.Observations.Find(observationId);
         if (observation == null)

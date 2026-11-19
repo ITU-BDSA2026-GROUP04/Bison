@@ -57,20 +57,27 @@
 
     <!--Proposal-->
     <h3>Proposals<h3/>
-    @if (Model.Observations.Proposals.Any())
+    @if (Model.Observations.Proposals != null || Model.Observations.Proposals.Any())
             {
-                <ul>
-                    @foreach(var proposal in Model.Observations.Proposals)
+                <ul id = "messagelist" class="observations">
+            @foreach(var ob in Model.Observations.Proposals)
                 {
-                   <li>@proposal.Author.UserName: @proposal.Text</li>
-                } 
-                </ul>
+                   <li>
+                    <p>
+                        <strong>
+                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName?? "Unknown")</a>
+                        </strong>
+                        @ob.Text
+                        <small>&mdash;@ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                    </p>
+                    </li>
+                }  
+            </ul>
             }
             else
             {
                 <em>No proposals</em>
             }
-
 
 
     @if(User.Identity?.IsAuthenticated == true)
@@ -85,7 +92,7 @@
         }
 
 else{
-    <em>No observations</em>
+    <em>No proposals</em>
 }
 </div>
 
