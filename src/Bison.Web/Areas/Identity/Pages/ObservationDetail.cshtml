@@ -1,4 +1,5 @@
 @page "/ob/{id}"
+@using System.Data.Common
 @model Bison.Web.Pages.ObservationDetailModel
 @{
     ViewData["Title"] = "Model";
@@ -21,12 +22,20 @@
 
     <!--Comment-->
     <h3>Comments<h3/>
-    @if (Model.Observations.Comment.Any())
+    @if (Model.Observations.Comment != null && Model.Observations.Comment.Any())
         {
-            <ul>
-            @foreach(var comment in Model.Observations.Comment)
+            <ul id = "messagelist" class="observations">
+            @foreach(var ob in Model.Observations.Comment)
                 {
-                   <li>@comment.Author.UserName: @comment.Text</li>
+                   <li>
+                    <p>
+                        <strong>
+                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName?? "Unknown")</a>
+                        </strong>
+                        @ob.Text
+                        <small>&mdash;@ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                    </p>
+                    </li>
                 }  
             </ul>
         }
