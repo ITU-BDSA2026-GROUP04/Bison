@@ -24,7 +24,6 @@ public interface IObservationService
     public void createProposal(int postId, string text, string authorName); //Or observationId instead of postId?
 
 }
-
 public class ObservationService : IObservationService
 {
     private readonly IPostRepository _repository;
