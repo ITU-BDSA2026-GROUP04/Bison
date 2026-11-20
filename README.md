@@ -38,6 +38,21 @@ dotnet run discussion <ObservationId>
 dotnet run comment "<Message>" <ObservationId>
 ```
 
+#### Read current proposals
+`<ObservationId>` is the ID of the observation where you want to see the proposals
+
+```bash
+dotnet run proposal <ObservationId>
+```
+
+#### Make a comment
+`<TaxonId>` is the TaxonId you want to propose to an observation
+`<ObservationId>` is the ID of the observation you want to comment on
+
+```bash
+dotnet run propsal "<TaxonId>" <ObservationId>
+```
+
 #### Read observations with a specific location
 `<Location>` is the location where you want to see observations from
 
