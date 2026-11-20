@@ -1,4 +1,5 @@
 @page "/ob/{id}"
+@using System.Data.Common
 @model Bison.Web.Pages.ObservationDetailModel
 @{
     ViewData["Title"] = "Model";
@@ -18,57 +19,83 @@
             <small>&mdash; @Model.Observations.Timestamp</small>
     </p>
     </h3>
-    
 
-    @if (!Model.Observations.Message.Equals(""))
-    {
-        @if (Model.Observations.Comment != null && Model.Observations.Comment.Any()) 
+    <!--Comment-->
+    <h3>Comments<h3/>
+    @if (Model.Observations.Comment != null && Model.Observations.Comment.Any())
         {
-            <h4><strong>Comments</strong></h4>
-            <ul id="messagelist" class="observations">
-                @foreach (var ob in Model.Observations.Comment)
+            <ul id = "messagelist" class="observations">
+            @foreach(var ob in Model.Observations.Comment)
                 {
-                    <li>
-                        <p>
-                            <strong>
-                                <a href="/@ob.Author.UserName">@ob.Author.UserName</a>
-                            </strong>
-                            @ob.Text
-                            <small>&mdash; @ob.TimeStamp</small>
-                        </p>
+                   <li>
+                    <p>
+                        <strong>
+                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName?? "Unknown")</a>
+                        </strong>
+                        @ob.Text
+                        <small>&mdash;@ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                    </p>
                     </li>
-                }
+                }  
             </ul>
         }
         else
         {
-            <em>There are no comments so far.</em>
+            <em>No comments</em>
+        }
+    
+    @if(User.Identity?.IsAuthenticated == true)
+        {
+            <div class="observationbox" style="margin-top: 20px;">
+                <h4>Add a comment</h4>
+                <form method="post" asp-page-handler="Comment" asp-route-id="@RouteData.Values["id"]">
+                    <input type="text" asp-for="comment" placeholder="Comment..." required />
+                    <input type="submit" value="Comment" />
+                </form>
+            </div>
         }
 
-        @if (Model.Observations.Proposals != null && Model.Observations.Proposals.Any()) 
-        {
-            <h4><strong>Proposals</strong></h4>
-            <ul id="messagelist" class="observations">
-                @foreach (var ob in Model.Observations.Proposals)
+    <!--Proposal-->
+    <h3>Proposals<h3/>
+    @if (Model.Observations.Proposals != null || Model.Observations.Proposals.Any())
+            {
+                <ul id = "messagelist" class="observations">
+            @foreach(var ob in Model.Observations.Proposals)
                 {
-                    <li>
-                        <p>
-                            <strong>
-                                <a href="/@ob.Author.UserName">@ob.Author.UserName</a>
-                            </strong>
-                            @ob.Text
-                            <small>&mdash; @ob.TimeStamp</small>
-                        </p>
+                   <li>
+                    <p>
+                        <strong>
+                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName?? "Unknown")</a>
+                        </strong>
+                        @ob.Text
+                        <small>&mdash;@ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                    </p>
                     </li>
-                }
+                }  
             </ul>
-        }
-        else
+            }
+            else
+            {
+                <em>No proposals</em>
+            }
+
+
+    @if(User.Identity?.IsAuthenticated == true)
         {
-            <em>There are no proposals so far.</em>
+            <div class="observationbox" style="margin-top: 20px;">
+                <h4>Add proposal</h4>
+                <form method="post" asp-page-handler="Proposal" asp-route-id="@RouteData.Values["id"]">
+                    <input type="text" asp-for="proposal" placeholder="Proposals..." required />
+                    <input type="submit" value="Propose" />
+                </form>
+            </div>
         }
-    } else {
-        <em>This observation does not exist.</em>
-    }
-    
+
+else{
+    <em>No proposals</em>
+}
 </div>
+
+    
+
+    

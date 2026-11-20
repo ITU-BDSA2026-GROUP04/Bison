@@ -6,7 +6,24 @@
 }
 
 <div>
-    <h2> Public Timeline </h2>
+    <!--Public Timeline-->
+    <h2> Public Observations </h2>
+
+    <!--Observation box displayed for authenticated users-->
+     <!-- Skeleton for observationbox from assignment sheet, however changed the placeholders for image-->
+    @if(User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <div class = "observationbox">
+            <h3>What did you see, @(User.Identity.Name)?</h3>
+            <form method="post">
+                <input style="float: left" type="text" asp-for="Text" required>
+                <input type="text" asp-for="ImageURL" placeholder="Add optional Image URL" />
+                <input type="hidden" asp-for="TaxonId" value="1" />
+                <input type="submit" value="Share">
+            </form>
+        </div>
+    }
+    
 
     @if (Model.Observations.Any())
     {
@@ -19,6 +36,14 @@
                             <a href="/obs/@obs.Author">@obs.Author</a>
                         </strong>
                         @obs.Message
+
+                        @if(!string.IsNullOrEmpty(obs.ImageURL))
+                        {
+                            <br/>
+                            <img src="@obs.ImageURL" alt="Observation picture" style="max-width: 250px;" />
+
+                        }
+
                         <small>&mdash; @obs.Timestamp</small>
                         <br />
                         <small><a href="/obs/taxons/@obs.TaxonId">@(obs.Taxon?.VernacularName ?? "Unknown")</a></small>

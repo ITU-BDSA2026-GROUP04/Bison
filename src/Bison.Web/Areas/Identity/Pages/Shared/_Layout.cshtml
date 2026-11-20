@@ -15,7 +15,7 @@
     @if (User.Identity?.IsAuthenticated == true)
     {
         <div>
-            <a href="/@(User.Identity.Name)">My Observations</a> | 
+            <a href="/obs/@(User.Identity.Name)">My Observations</a> | 
             <a href="/">Public Observations</a> |
             <a asp-area="Identity" asp-page="/Account/Logout">Logout [@(User.Identity.Name)]</a>
         </div>

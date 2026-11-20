@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using Models;
 using Bison.Infrastructure.Repositories;
+using Microsoft.VisualBasic;
 
 namespace Bison.Infrastructure.Services;
-public record ObservationViewModel(string Author, string Message, string Timestamp, Taxon Taxon, int? TaxonId);
+public record ObservationViewModel(string Author, string Message, string Timestamp, Taxon Taxon, int? TaxonId, string? ImageURL);
 
 //public record Comment(string Author, string Message, string Timestamp); Obsolete, now using the Comment class from the Post.cs model instead of a separate record.
-public record ObservationDetailViewModel(string Author, string Message, string Timestamp, List<Comment> Comment, List<Proposal> Proposals);
+public record ObservationDetailViewModel(string Author, string Message, string Timestamp, List<Comment> Comment, List<Proposal> Proposals, string? ImageURL = null);
 
 public interface IObservationService
 {
@@ -16,8 +17,13 @@ public interface IObservationService
     public ObservationDetailViewModel GetObservationDetailsById(int id, int page = 1);
 
     public List<ObservationViewModel> GetFilteredObservations(int taxonId, int page = 1);
-}
 
+    //For creating observations, comments and proposals
+    public void createObservation(string text, string authorName, int taxonId, string? imageURL = null);
+    public void createComment(int postId, string text, string authorName); //Or observationId instead of postId?
+    public void createProposal(int postId, string text, string authorName); //Or observationId instead of postId?
+
+}
 public class ObservationService : IObservationService
 {
     private readonly IPostRepository _repository;
@@ -29,14 +35,14 @@ public class ObservationService : IObservationService
     public List<ObservationViewModel> GetObservations(int page = 1)
     {
         return _repository.GetAllObservations(page)
-            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
+            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId, p.ImageURL)).ToList();
     }
 
 
     public List<ObservationViewModel> GetObservationsFromAuthor(string author, int page = 1)
     {
         return _repository.GetByAuthor(author, page)
-            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId)).ToList();
+            .Select(p => new ObservationViewModel(p.Author.UserName, p.Text, p.TimeStamp.ToString(), p.Taxon, p.TaxonId, p.ImageURL)).ToList();
     }
 
     public ObservationDetailViewModel GetObservationDetailsById(int id, int page = 1)
@@ -44,9 +50,11 @@ public class ObservationService : IObservationService
         var post = _repository.GetById(id);
         if (post == null) return null;
         
+        var observation = post as Observation; //Added since Image wouldn't show when share
         var comments = (post as Observation)?.Comments?.ToList() ?? new List<Comment>(); //if this post is an Observation, get its comments, otherwise return an empty list.
         var proposals = (post as Observation)?.Proposals?.ToList() ?? new List<Proposal>(); 
-            return new ObservationDetailViewModel(post.Author.UserName, post.Text, post.TimeStamp.ToString(), comments, proposals);
+            return new ObservationDetailViewModel(
+                post.Author.UserName, post.Text, post.TimeStamp.ToString("dd/MM/yyyy HH:mm"), comments, proposals, observation?.ImageURL);
     }
 
     public List<ObservationViewModel> GetFilteredObservations(int taxonId, int page = 1)
@@ -72,11 +80,31 @@ public class ObservationService : IObservationService
        var result = new List<ObservationViewModel> ();
        foreach(var ob in filteredObservations)
         {
-            result.Add(new ObservationViewModel(ob.Author.UserName,ob.Text,ob.TimeStamp.ToString(), ob.Taxon, ob.TaxonId));
+            result.Add(new ObservationViewModel(ob.Author.UserName,ob.Text,ob.TimeStamp.ToString(), ob.Taxon, ob.TaxonId, ob.ImageURL));
         }
         return result;
     }
+
+    //For creating observations, comments and proposals
+    public void createObservation(string text, string authorName, int taxonId, string? imageURL = null)
+    {
+        _repository.createObservation(text, authorName, taxonId, imageURL);
+    }
+
+    public void createComment(int postId, string text, string authorName)
+    {
+        _repository.createComment(postId, text, authorName);
+    }
+
+    public void createProposal(int postId, string text, string authorName)
+    {
+        _repository.createProposal(postId, text, authorName);
+    }
+
+
 }
+
+
 
     //Obsolete, now using DateTime.ToString() instead of converting to string manually.
 

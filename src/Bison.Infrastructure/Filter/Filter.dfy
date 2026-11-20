@@ -1,7 +1,7 @@
 //Dafny file: Promise something about the result, then Dafny proves that the promise is kept, for every output
-//1.a) Implement filter mechanism using dafny function
+//Implement filter mechanism using dafny function
 
-//declaration from assignment week7
+//Declaration from assignment week7
 
 module Models{
     class {:extern} Taxon {
