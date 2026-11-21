@@ -70,13 +70,13 @@ observeCommand.SetAction( async(ParseResult parseResult) =>
         IEnumerable<Observation>? observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
         int Id = observations.Count() + 1; //Works as long as observations are not removed
         string Author = Environment.UserName; //get the author
-        long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
+        long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
         string[] observationArray = parseResult.GetRequiredValue(observationArgument); //get the message and location
         string Message = string.Join(" ", observationArray.Take(observationArray.Length - 1)); //taking all elements except for the last in the array and making a string
         string Location = observationArray[observationArray.Length -1]; //getting the last list, which is the location
         
         
-        var observation = new Observation(Id, Author, unixTimestamp, Message, Location); //format the observation for storage
+        var observation = new Observation(Id, Author, Timestamp, Message, Location); //format the observation for storage
         
         //stores the observation in the database
         HttpResponseMessage response = await client.PostAsJsonAsync("observation", observation);
@@ -109,9 +109,9 @@ commentCommand.SetAction(async (ParseResult parseResult) =>
 
     string message = parseResult.GetRequiredValue(commentMessageArgument); //get the message
     string Author = Environment.UserName; //get the author
-    long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
+    long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
 
-    var comment = new Comment(observationId, Author, message, unixTimestamp); //formatting the comment for storage
+    var comment = new Comment(observationId, Author, message, Timestamp); //formatting the comment for storage
     //stores the comment in the database
     HttpResponseMessage response = await client.PostAsJsonAsync("comment", comment);
     response.EnsureSuccessStatusCode();
@@ -181,10 +181,10 @@ proposalCommand.SetAction(async (ParseResult parseResult) =>
     }
 
     string Author = Environment.UserName; //get the author
-    long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
+    long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); //get the time
     
 
-    var proposal = new Proposal(observationId, Author, unixTimestamp, TaxonId); //formatting the comment for storage
+    var proposal = new Proposal(observationId, Author, Timestamp, TaxonId); //formatting the comment for storage
     //stores the proposal in the database
     HttpResponseMessage response = await client.PostAsJsonAsync("proposal", proposal);
     response.EnsureSuccessStatusCode();

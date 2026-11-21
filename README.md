@@ -42,7 +42,7 @@ dotnet run comment "<Message>" <ObservationId>
 `<ObservationId>` is the ID of the observation where you want to see the proposals
 
 ```bash
-dotnet run proposal <ObservationId>
+dotnet run proposals <ObservationId>
 ```
 
 #### Make a comment

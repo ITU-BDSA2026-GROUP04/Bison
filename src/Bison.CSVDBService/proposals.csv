@@ -1,1 +1,2 @@
-ObservationId,Author,TaxonId,Timestamp
+ObservationId,TaxonId,Author,Timestamp,Message
+1,MSTSNM:Arter:cb487af6-7074-427a-a7cb-b20900a28376,julie,1795179961,MSTSNM:Arter:cb487af6-7074-427a-a7cb-b20900a28376

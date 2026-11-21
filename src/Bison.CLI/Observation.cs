@@ -1,3 +1,5 @@
+using System.ComponentModel.Design;
+
 public record Observation
 ( 
     int Id, 
@@ -5,4 +7,4 @@ public record Observation
     long Timestamp, 
     string Message,
     string Location
-);
+): Cheep(Author, Timestamp, Message);
