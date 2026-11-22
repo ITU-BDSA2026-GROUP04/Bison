@@ -5,19 +5,20 @@ public class IntegrationTest
 {
     [Fact]
 
-    public void test()
-    {
-        CSVDatabase<Observation> database = new CSVDatabase<Observation>("observations.csv");
+    public void testObservation()
+    {   
+        var database = ObservationDatabase<Observation>.Instance;
 
-        Observation observation = new Observation(100, "Kir", DateTimeOffset.UtcNow.ToUnixTimeSeconds(), "Pigeon on the ITU roof");
+        Observation observation = new Observation(100, "User1", DateTimeOffset.UtcNow.ToUnixTimeSeconds(), "Pigeon on the roof", "ITU");
         database.Store(observation);
         
         Observation record = database.Read().ElementAt(0);
 
         Assert.Equal(100, record.Id);
-        Assert.Equal("Kir", record.Author);
+        Assert.Equal("User1", record.Author);
         Assert.Equal(1789328470,record.Timestamp);
-        Assert.Equal("Pigeon on the ITU roof", record.Message);
+        Assert.Equal("Pigeon on the roof", record.Message);
+         Assert.Equal("ITU", record.Location);
         
 
         

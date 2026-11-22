@@ -32,15 +32,17 @@ public class UnitTest
         string Author = "Test Author";
         long Timestamp = 17000;
         string message = "Test Message";
+        string location = "Test Location";
 
         // Act
-        var observation = new Observation(id, Author, Timestamp, message);
+        var observation = new Observation(id, Author, Timestamp, message, location);
 
         // Assert
         Assert.Equal(1, observation.Id);
         Assert.Equal("Test Author", observation.Author);
         Assert.Equal(17000, observation.Timestamp);
         Assert.Equal("Test Message", observation.Message);
+        Assert.Equal("Test Location", observation.Location);
     }
 
     [Fact]
@@ -52,7 +54,7 @@ public class UnitTest
 
         // Act
         var comment = new Comment(nonExistingObservationID, "TestUser", "Test message", DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-            commentDatabase.Store(comment);
+        commentDatabase.Store(comment);
         
         bool commentExists = commentDatabase.Read().Any(c => c.ObservationId == 1);
 
