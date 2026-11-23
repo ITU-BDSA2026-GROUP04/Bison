@@ -3,9 +3,9 @@ using SimpleDB;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var observationDb = ObservationDatabase<Observation>.Instance;
-var commentDb = CommentDatabase<Comment>.Instance;
-var proposalDb = ProposalDatabase<Proposal>.Instance;
+var observationDb = CSVDatabase<Observation>.Instance;
+var commentDb = CSVDatabase<Comment>.Instance;
+var proposalDb = CSVDatabase<Proposal>.Instance;
 
 //Get observations. Use our existing Read method to return all observations in the database
 app.MapGet("/observations", () => observationDb.Read());
