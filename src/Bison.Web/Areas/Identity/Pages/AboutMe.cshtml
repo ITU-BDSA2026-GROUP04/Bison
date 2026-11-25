@@ -1,0 +1,122 @@
+@page "/aboutme"
+@model Bison.Web.Pages.AboutMeModel
+@{
+    ViewData["Title"] = "About Me";
+    Layout = "Shared/_Layout";
+}
+
+<div>
+    <h2>About Me</h2>
+
+    @if (Model.CurrentUser != null)
+    {
+        <div class="user-info">
+            <h3>Personal Information</h3>
+            <table>
+                <tr>
+                    <td><strong>Username:</strong></td>
+                    <td>@Model.CurrentUser.UserName</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>@Model.CurrentUser.Email</td>
+                </tr>
+                <tr>
+                    <td><strong>User ID:</strong></td>
+                    <td>@Model.CurrentUser.Id</td>
+                </tr>
+            </table>
+        </div>
+
+        <hr />
+
+        <div class="my-observations">
+            <h3>My Observations (@Model.MyObservations.Count)</h3>
+            @if (Model.MyObservations.Any())
+            {
+                <ul class="observations">
+                    @foreach (var obs in Model.MyObservations)
+                    {
+                        <li>
+                            <p>
+                                @obs.Text
+                                <small>&mdash; @obs.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                                <br />
+                                <small>Taxon: @(obs.Taxon?.VernacularName ?? "Unknown")</small>
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <em>You have no observations yet.</em>
+            }
+        </div>
+
+        <hr />
+
+        <div class="my-comments">
+            <h3>My Comments (@Model.MyComments.Count)</h3>
+            @if (Model.MyComments.Any())
+            {
+                <ul class="observations">
+                    @foreach (var comment in Model.MyComments)
+                    {
+                        <li>
+                            <p>
+                                @comment.Text
+                                <small>&mdash; @comment.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                                <br />
+                                <small>On observation #@comment.ObservationId</small>
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <em>You have no comments yet.</em>
+            }
+        </div>
+
+        <hr />
+
+        <div class="my-proposals">
+            <h3>My Proposals (@Model.MyProposals.Count)</h3>
+            @if (Model.MyProposals.Any())
+            {
+                <ul class="observations">
+                    @foreach (var proposal in Model.MyProposals)
+                    {
+                        <li>
+                            <p>
+                                @proposal.Text
+                                <small>&mdash; @proposal.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                                <br />
+                                <small>On observation #@proposal.ObservationId</small>
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <em>You have no proposals yet.</em>
+            }
+        </div>
+
+        <hr />
+
+        <div class="forget-me" style="margin-top: 30px;">
+            <h3>Delete My Account</h3>
+            <p>Warning: This action cannot be undone.</p>
+            <form method="post" asp-page-handler="ForgetMe">
+                <button type="submit" style="background-color: red; color: white; padding: 10px 20px; border: none; cursor: pointer;"
+                        onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.');">
+                    Forget Me!
+                </button>
+            </form>
+        </div>
+    }
+</div>
