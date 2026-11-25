@@ -25,7 +25,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build src/Bison.Infrastructure/ --configuration Release
+        run: dotnet build src/Bison.Web/ --configuration Release
 
       - name: dotnet publish
         run: dotnet publish src/Bison.Web/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
