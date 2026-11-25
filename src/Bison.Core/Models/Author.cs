@@ -10,4 +10,12 @@ public class Author : IdentityUser<int>
     public ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public int XP {get; set;}  //Maybe XP = 0? - Jón
+
+    public string Level => XP switch
+    {
+        >= 100 => "gold observer",
+        >= 50  => "silver sharer",
+        >= 10  => "bronze spotter",
+        _      => "newbie"
+    };
 }
