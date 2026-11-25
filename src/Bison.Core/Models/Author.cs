@@ -8,4 +8,6 @@ public class Author : IdentityUser<int>
     //public string Email { get; set; } // IdentityUser already has 'Email'
 
     public ICollection<Post> Posts { get; set; } = new List<Post>();
+
+    public int XP {get; set;}  //Maybe XP = 0? - Jón
 }

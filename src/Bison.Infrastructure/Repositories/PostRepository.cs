@@ -64,6 +64,9 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
                 //Name = authorName
             };
             _context.Authors.Add(author);
+
+        author.XP =+ 5;
+
         _context.SaveChanges();
 
             //throw new Exception($"Author: '{authorName}' not found.");
