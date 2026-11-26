@@ -50,7 +50,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
             .ToList();
     }
 
-    //New observation creation feature
+    //Create observation feature
     public void createObservation(string text, string authorName, int taxonId, string? imageURL = null)
     {
         //Find author by name in the database, if not found, throw an exception
@@ -86,7 +86,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         _context.SaveChanges();
     }
 
-    //New comment creation feature
+    //Create comment feature
     public void createComment(int observationId, string text, string authorName)
     {
         //Find author by name in the database, if not found, throw an exception
@@ -118,7 +118,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     }
 
 
-    //New proposal creation feature
+    //Create proposal feature
     public void createProposal(int observationId, string text, string authorName)
     {
         //Find author by name in the database, if not found, throw an exception
