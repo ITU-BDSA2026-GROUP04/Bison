@@ -2,7 +2,7 @@
 @using System.Data.Common
 @model Bison.Web.Pages.ObservationDetailModel
 @{
-    ViewData["Title"] = "Model";
+    ViewData["Title"] = "Model"; 
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("id");
 }
@@ -10,38 +10,44 @@
 <div>
     <h2> Observation @routeName </h2>
 
-    <h3>
-    <p class="observations">
-        <strong>
+    @if (Model.Observations == null)
+    {
+        <p><em>Observation not found</em></p>
+    }
+    else
+    {
+       <p class="observations"> 
+            <strong>
             <a href="/@Model.Observations.Author">@Model.Observations.Author</a>
             </strong>
             @Model.Observations.Message
             <small>&mdash; @Model.Observations.Timestamp</small>
     </p>
-    </h3>
 
-    <!--Comment-->
+    }
+
+     <!--Comments-->
     <h3>Comments<h3/>
     @if (Model.Observations.Comment != null && Model.Observations.Comment.Any())
         {
-            <ul id = "messagelist" class="observations">
+            <ul id = "commentlist" class="observations">
             @foreach(var ob in Model.Observations.Comment)
                 {
                    <li>
-                    <p>
+                     <p>
                         <strong>
-                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName?? "Unknown")</a>
+                            <a href = "/@(ob.Author?.UserName?? "Unknown")"> @(ob.Author?.UserName ?? "Unknown")</a>
                         </strong>
                         @ob.Text
-                        <small>&mdash;@ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
-                    </p>
+                        <small>&mdash; @ob.TimeStamp.ToString("dd/MM/yyyy HH:mm")</small>
+                     </p>
                     </li>
                 }  
             </ul>
         }
         else
         {
-            <em>No comments</em>
+            <p><em>No comments</em></p>
         }
     
     @if(User.Identity?.IsAuthenticated == true)
@@ -55,7 +61,7 @@
             </div>
         }
 
-    <!--Proposal-->
+    <!--Proposals-->
     <h3>Proposals<h3/>
     @if (Model.Observations.Proposals != null || Model.Observations.Proposals.Any())
             {
@@ -96,6 +102,5 @@ else{
 }
 </div>
 
-    
 
     
