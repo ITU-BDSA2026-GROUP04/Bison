@@ -101,9 +101,7 @@ public class ObservationService : IObservationService
         _repository.createProposal(postId, text, authorName);
     }
 
-
 }
-
 
 
     //Obsolete, now using DateTime.ToString() instead of converting to string manually.
