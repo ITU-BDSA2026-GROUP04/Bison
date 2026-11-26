@@ -17,8 +17,8 @@ public class UnitTest
 
     public void TestInstanceCalledMultipleTimesStillReturnsSameReference() {
         // Arrange & Act
-        var obsDbInstance1 = ObservationDatabase<Observation>.Instance;
-        var obsDbInstance2 = ObservationDatabase<Observation>.Instance;
+        var obsDbInstance1 = CSVDatabase<Observation>.Instance;
+        var obsDbInstance2 = CSVDatabase<Observation>.Instance;
 
         // Assert
         Assert.Same(obsDbInstance1, obsDbInstance2);
@@ -76,5 +76,7 @@ public class UnitTest
         // Assert
         Assert.True("09/16/26 10.17.52" == formatteddate);
 }
+
+    
 
     }
