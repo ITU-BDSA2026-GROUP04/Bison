@@ -34,7 +34,12 @@ public class ObservationDetailModel : PageModel
         {
             return RedirectToPage(new {id});
         }
-        _service.createComment(id, comment, User.Identity.Name!);
+
+        if (!string.IsNullOrEmpty(comment))
+        {
+            _service.createComment(id, comment, User.Identity.Name!);
+        }
+        
         return RedirectToPage(new {id});
     }
 
