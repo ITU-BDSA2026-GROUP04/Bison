@@ -89,18 +89,18 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
     //Create comment feature
     public void createComment(int observationId, string text, string authorName)
     {
-        //Find author by name in the database, if not found, throw an exception
+
         var author = _context.Authors.FirstOrDefault(a => a.UserName == authorName || a.Email == authorName);
         if (author == null)
         {
             throw new Exception($"Author: '{authorName}' not found.");
         }
-
+       
         //Find the post by id in the database, if not found, throw an exception
         var observation = _context.Observations.Find(observationId);
         if (observation == null)
         {
-            throw new Exception($"Observation: '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+            throw new Exception($"Observation: '{observationId}' not found."); //Observation instead of post, since comments are only for observations
         }
 
         //Create new comment and add it to the database
@@ -132,7 +132,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         var observation = _context.Observations.Find(observationId);
         if (observation == null)
         {
-            throw new Exception($"Observation: '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
+            throw new Exception($"Observation: '{observationId}' not found."); //Observation instead of post, since comments are only for observations
         }
 
         //Create new proposal and add it to the database
