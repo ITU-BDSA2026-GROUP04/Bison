@@ -19,7 +19,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     
     [Fact]
     public async Task statusCodeObservation()
-    //Testing status codes for observations 
+    //Testing status codes for observations when database is empty
     {   
         HelpFunction.resetDatabase("observations");
         HttpClient client = _fixture.CreateClient();
@@ -31,7 +31,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 
      [Fact]
     public async Task statusCodeComments()
-    //Testing status codes for comments 
+    //Testing status codes for comments when database is empty
     {   
         HelpFunction.resetDatabase("comments");
         HttpClient client = _fixture.CreateClient();
@@ -43,7 +43,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 
      [Fact]
     public async Task statusCodeProposals()
-    //Testing status codes for proposals when it is empty 
+    //Testing status codes for proposals when database is empty 
     {   
         HelpFunction.resetDatabase("proposals");
         HttpClient client = _fixture.CreateClient();
