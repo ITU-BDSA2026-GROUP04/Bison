@@ -2,7 +2,6 @@ using SimpleDB;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-
 var observationDb = CSVDatabase<Observation>.Instance;
 var commentDb = CSVDatabase<Comment>.Instance;
 var proposalDb = CSVDatabase<Proposal>.Instance;
@@ -46,4 +45,6 @@ app.MapGet("/proposals", (int id) =>
 
 
 app.Run();
+
+public partial class Program { }
 
