@@ -15,8 +15,7 @@ builder.Services.AddScoped<IObservationService, ObservationService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 builder.Services.AddDbContext<BisonDBContext>(options =>
-    options.UseSqlite("Data Source=/tmp/bison.db")); // Register EF Core with SQLite database
-
+    options.UseSqlite(builder.Configuration.GetConnectionString("BisonDbConnection")));
 builder.Services.AddDefaultIdentity<Author>(options => { // Før ApplicationUser
 
     options.SignIn.RequireConfirmedAccount = false;
@@ -54,7 +53,6 @@ var app = builder.Build();
 //seed the database
 using (var scope = app.Services.CreateScope()){
 var context = scope.ServiceProvider.GetRequiredService<BisonDBContext>();
-    context.Database.EnsureDeleted(); // Not sure this should stay when we change our database to not be tmp anymore, but it makes it work for now.
     context.Database.EnsureCreated();
     DbInitializer.SeedDatabase(context); //call the DbInitializer to seed the database with initial data
 }
