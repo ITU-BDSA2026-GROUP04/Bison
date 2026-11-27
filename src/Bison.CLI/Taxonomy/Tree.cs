@@ -15,7 +15,7 @@ public class TaxonMapper : RowMapper<Taxon>
         };
     }
 }
-class Tree
+public class Tree
     
 
 {
