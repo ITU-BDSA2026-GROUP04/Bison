@@ -50,7 +50,7 @@ dotnet run proposals <ObservationId>
 `<ObservationId>` is the ID of the observation you want to comment on
 
 ```bash
-dotnet run propsal "<TaxonId>" <ObservationId>
+dotnet run proposal "<TaxonId>" <ObservationId>
 ```
 
 #### Read observations with a specific location
