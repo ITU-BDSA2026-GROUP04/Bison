@@ -17,12 +17,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
     <PackageReference Include="xunit.v3.mtp-v2" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Bison.CLI\Bison.CLI.csproj" />
     <ProjectReference Include="..\..\src\SimpleDB\SimpleDB.csproj" />
+    <ProjectReference Include="..\CsvTest\CsvTest.csproj" />
   </ItemGroup>
 
 </Project>
