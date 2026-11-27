@@ -19,7 +19,6 @@ public class PostRepository : IPostRepository //IAggregateRoot
     }
 
 
-
 public IEnumerable<Post> GetAll(int page = 1)
     //New getObservations method from DBFacade.cs, but now using the DbContext and DbSet instead of raw SQL queries.
     {
@@ -64,10 +63,12 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
                 //Name = authorName
             };
             _context.Authors.Add(author);
-        _context.SaveChanges();
+
+            _context.SaveChanges();
 
             //throw new Exception($"Author: '{authorName}' not found.");
         }
+        author.XP += 10; //10xp for creating observation
 
         var taxon = _context.Taxons.Find(taxonId);
         
@@ -102,7 +103,7 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         {
             throw new Exception($"Observation: '{observationId}' not found."); //Obsrvation instead of post, since comments are only for observations
         }
-
+        author.XP += 5;
         //Create new comment and add it to the database
         var comment = new Comment
         {
@@ -115,6 +116,8 @@ public IEnumerable<Observation> GetByAuthor(string author, int page = 1)
         //Add the comment to the database and save changes
         _context.Comments.Add(comment);
         _context.SaveChanges();
+
+        //Not finished: actually able to commit a comment is not accessible yet
     }
 
 
