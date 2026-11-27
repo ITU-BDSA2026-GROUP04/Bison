@@ -123,13 +123,47 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
       
     }
 
-    //Test that multiple observations are stored and retrived correctly in order
+    [Fact]
+    public async Task proposalPostAndGet()
+    //Test that the latest recorded proposal is stored and retrieved correctly
+    {
+        HelpFunction.resetDatabase("proposals");
+        HttpClient client = _fixture.CreateClient();
+        
+
+        //Store observation that we can test comment on
+        Observation observation = new Observation(1, "User1", DateTimeOffset.UtcNow.ToUnixTimeSeconds(), "saw a grey bird" ,"ITU");
+
+        HttpResponseMessage responseObservation = await client.PostAsJsonAsync("observation", observation);
+
+        //Check that the response is okay
+        Assert.Equal(HttpStatusCode.OK, responseObservation.StatusCode);  
+
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Proposal proposal = new Proposal(1,"User3",timestamp,"MSTSNM:Arter:7dbff9f3-f785-ea11-aa77-501ac539d1ea");
+
+        HttpResponseMessage response = await client.PostAsJsonAsync("proposal", proposal);
+
+        //Check that the response is okay
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);  
+
+        IEnumerable<Proposal> responseProposals = await client.GetFromJsonAsync<IEnumerable<Proposal>>($"proposals?id={1}");
+        var responseProposal = responseProposals.ElementAt(responseProposals.Count()-1);
+
+
+        //Check that the comment was stored correctly
+        Assert.Equal(1, responseProposal.ObservationId);
+        Assert.Equal("User3", responseProposal.Author);
+        Assert.Equal(timestamp,responseProposal.Timestamp);
+        Assert.Equal("MSTSNM:Arter:7dbff9f3-f785-ea11-aa77-501ac539d1ea", responseProposal.TaxonId);
+    }
+    
 
     
 
-    //Test that the latest recorded proposal is stored and retrieved correctly
+    
 
-
+    //Test that multiple observations are stored and retrived correctly in order
     //test that comments are not stored when the observationId does not exists
     
     //Test that proposals are not stored when the observationId does not exist
