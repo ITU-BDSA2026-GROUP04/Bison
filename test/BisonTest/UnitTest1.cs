@@ -7,6 +7,7 @@ using System.Reflection;
 using SimpleDB;
 using System.Net.Mail;
 using System.Data.Common;
+using HelpFunctions;
 
 [TestClass]
 public class UnitTest
@@ -49,7 +50,8 @@ public class UnitTest
     public void TestComments_OnNonExistingObservations_AreNotStored() {
         // Arrange
         //var observationDatabase = new CSVDatabase<Observation>("test_observations.csv");
-        var commentDatabase = CSVDatabase<Comment>.Instance; //("test_comments.csv")
+        HelpFunction.resetDatabases();
+        var commentDatabase = CSVDatabase<Comment>.Instance;
         int nonExistingObservationID = 1;
 
         // Act
@@ -69,14 +71,17 @@ public class UnitTest
         long unixTimestamp = 1789553872;
 
         // Act
-        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        //string formatteddate = UserInterface.FormattedUnixTime(unixTimestamp);
-        string formatteddate = dateTimeOffset.UtcDateTime.ToString("MM/dd/yy HH:mm:ss");
+        string formatteddate = UserInterface.FormattedUnixTime(unixTimestamp);
+        
 
         // Assert
-        Assert.True("09/16/26 10.17.52" == formatteddate);
+        Assert.True("09/16/26 10:17:52" == formatteddate);
 }
 
     
 
     }
+
+    //Test that proposals are not stored if observationID does not exist or taxonId does not exist
+
+

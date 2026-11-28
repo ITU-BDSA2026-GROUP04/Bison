@@ -1,8 +1,96 @@
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Diagnostics;
+using CsvTest;
+using System.Net;
+using System.Net.Http.Json;
+using HelpFunctions;
+using System.Net.Http.Headers;
 
-namespace BisonTest;
 
-public class EndtoEndTest
+
+public class EndToEndTest: IClassFixture<WebApplicationFactory<ProgramDB>>
+{
+    private readonly WebApplicationFactory<ProgramDB> _fixture;
+    public EndToEndTest(
+        WebApplicationFactory<ProgramDB> fixture)
+    {
+        _fixture = fixture;
+    }
+
+    public HttpClient makeHTTPClient()
+    {
+       
+       HttpClient client = _fixture.CreateClient(); 
+
+       return client;
+    }
+
+    [Fact]
+    //Add a observation manually to observation.csv and see if the read function actually reads it correctly
+    //then delete that test observation and return the csv file to its original state
+    public  async Task ReadWithExistingObservation()
+    {   
+        //Reset all databases 
+        HelpFunction.resetDatabases();
+
+        //Make HTTP client
+        HttpClient client = _fixture.CreateClient(); 
+
+        //Make stringwriter so we can reas the output of the program
+        var output = new StringWriter();
+        Console.SetOut(output);
+
+        //Make taxon tree, since it is used in buildRoot
+        Tree tree = new Tree();
+        tree.create();
+
+        //Store predictible observation we can test for
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Observation observation = new Observation(1, "TestUser", timestamp, "Test Observation" ,"TestLocation");
+    
+        var exitCode = CLIapp.CLIapp.buildRoot(client,"observe Test Observation TestLocation".Split(' '), tree);
+       
+        
+        //Check that exit code is 0, it means the run succeeded
+        Assert.True(exitCode == 0);
+
+        //Check that the output in terminal is correct when confirming the observation stored
+        Assert.Contains("Observation: \"Test Observation\" recorded at TestLocation", output.ToString());
+
+        output = new StringWriter();
+        Console.SetOut(output);
+        exitCode = CLIapp.CLIapp.buildRoot(client,"read".Split(' '), tree);
+        
+        Assert.Contains("Test Observation at TestLocation", output.ToString());
+
+        /*
+        //run the correct things in the command line like a user would
+        var process = new Process();
+        process.StartInfo.FileName = "dotnet";
+        process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+        
+        //get the path so the test is universal
+        //string projectPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src","Bison.CLI"));
+        process.StartInfo.Arguments = $"run --project ../../../../../src/Bison.CLI read";
+        
+        //run command directly and capture what the program prints
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.UseShellExecute = false;
+        
+        process.Start();
+
+        //Collect the output
+        string output = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        Console.WriteLine(output);
+
+        Assert.Contains("TestUser", output);
+        Assert.Contains("Test Observation", output);*/
+    }
+}
+
+/*public class EndtoEndTest
 {
     [Fact]
     //Add a observation manually to observation.csv and see if the read function actually reads it correctly
@@ -104,4 +192,4 @@ public class EndtoEndTest
         
     
     }
-}
+}*/

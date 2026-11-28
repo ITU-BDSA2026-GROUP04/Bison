@@ -51,14 +51,6 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
             csv.WriteRecord(record);
             csv.NextRecord();
-
-            // //taking in the message from the command line argument and storing the data correctly
-            // string message = args[1];
-            // string author = Environment.UserName;
-            // long unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            // var cheep = new Cheep (author, unixTimestamp, message);
-
-            // Console.WriteLine("Observation recorded.");
         }
     }
 
