@@ -63,7 +63,7 @@ public static void PrintCommentRecorded(string Message, int id)
 public static string FormattedUnixTime(long unixTimestamp)
     {
         DateTimeOffset dateTime = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-              string formattedDate = dateTime.ToString("MM/dd/yy HH:mm:ss");
+              string formattedDate = dateTime.ToString("MM'/'dd'/'yy HH':'mm':'ss");
               return formattedDate;
         
     }
