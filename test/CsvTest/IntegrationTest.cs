@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
 using HelpFunctions;
+using Microsoft.AspNetCore.Builder;
 
 
-
-public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
+namespace IntegrationTest;
+public class IntegrationTest: IClassFixture<WebApplicationFactory<ProgramDB>>
 {
-    private readonly WebApplicationFactory<Program> _fixture;
+    private readonly WebApplicationFactory<ProgramDB> _fixture;
     public IntegrationTest(
-        WebApplicationFactory<Program> fixture)
+        WebApplicationFactory<ProgramDB> fixture)
     {
         _fixture = fixture;
     }
@@ -21,7 +22,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     public async Task statusCodeObservation()
     //Testing status codes for observations when database is empty
     {   
-        HelpFunction.resetDatabase("observations");
+        HelpFunction.resetDatabases();
         HttpClient client = _fixture.CreateClient();
         var response = await client.GetAsync("/observations");
 
@@ -33,7 +34,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     public async Task statusCodeComments()
     //Testing status codes for comments when database is empty
     {   
-        HelpFunction.resetDatabase("comments");
+        HelpFunction.resetDatabases();
         HttpClient client = _fixture.CreateClient();
         var response = await client.GetAsync("/comments?id=1");
 
@@ -45,7 +46,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     public async Task statusCodeProposals()
     //Testing status codes for proposals when database is empty 
     {   
-        HelpFunction.resetDatabase("proposals");
+        HelpFunction.resetDatabases();
         HttpClient client = _fixture.CreateClient();
         var response = await client.GetAsync("/proposals?id=1");
 
@@ -58,7 +59,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     //Test that the latest recorded observertion gets stored and retrieved correctly
     {   
         
-        HelpFunction.resetDatabase("observations");
+        HelpFunction.resetDatabases();
 
         HttpClient client = _fixture.CreateClient();
         
@@ -90,7 +91,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     //Test that the latest recorded comment is stored and retrieved correctly
     {   
         
-        HelpFunction.resetDatabase("comments");
+        HelpFunction.resetDatabases();
 
         HttpClient client = _fixture.CreateClient();
         
@@ -127,7 +128,7 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     public async Task proposalPostAndGet()
     //Test that the latest recorded proposal is stored and retrieved correctly
     {
-        HelpFunction.resetDatabase("proposals");
+        HelpFunction.resetDatabases();
         HttpClient client = _fixture.CreateClient();
         
 
@@ -158,17 +159,53 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
         Assert.Equal("MSTSNM:Arter:7dbff9f3-f785-ea11-aa77-501ac539d1ea", responseProposal.TaxonId);
     }
     
-
-    
-
-    
-
+    [Fact]
+    public async Task multipleObservationsStoredCorrectly()
     //Test that multiple observations are stored and retrived correctly in order
-    //test that comments are not stored when the observationId does not exists
-    
-    //Test that proposals are not stored when the observationId does not exist
+    {
+        HelpFunction.resetDatabases();
+        HttpClient client = _fixture.CreateClient();
+        
 
-    //Test that proposal is not stored when the taxonID in invalid
+        //Store multiple observations
+        var timestamp1 = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Observation observation1 = new Observation(1, "User1", timestamp1, "Message1" ,"Location1");
+
+        var timestamp2 = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Observation observation2 = new Observation(2, "User2", timestamp2, "Message2" ,"Location2");
+
+        var timestamp3 = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Observation observation3 = new Observation(3, "User3", timestamp3, "Message3" ,"Location3");
+
+
+
+        HttpResponseMessage response1 = await client.PostAsJsonAsync("observation", observation1);
+        HttpResponseMessage response2 = await client.PostAsJsonAsync("observation", observation2);
+        HttpResponseMessage response3 = await client.PostAsJsonAsync("observation", observation3);
+
+        IEnumerable<Observation> observations = await client.GetFromJsonAsync<IEnumerable<Observation>>("observations");
+
+        Assert.Equal(observations.ElementAt(0),observation1);
+            Assert.Equal(1, observations.ElementAt(0).Id);
+            Assert.Equal("User1", observations.ElementAt(0).Author);
+            Assert.Equal(timestamp1,observations.ElementAt(0).Timestamp);
+            Assert.Equal("Message1", observations.ElementAt(0).Message);
+            Assert.Equal("Location1", observations.ElementAt(0).Location);
+        
+        Assert.Equal(observations.ElementAt(1),observation2);
+            Assert.Equal(2, observations.ElementAt(1).Id);
+            Assert.Equal("User2", observations.ElementAt(1).Author);
+            Assert.Equal(timestamp2,observations.ElementAt(1).Timestamp);
+            Assert.Equal("Message2", observations.ElementAt(1).Message);
+            Assert.Equal("Location2", observations.ElementAt(1).Location);
+
+        Assert.Equal(observations.ElementAt(2),observation3);
+            Assert.Equal(3, observations.ElementAt(2).Id);
+            Assert.Equal("User3", observations.ElementAt(2).Author);
+            Assert.Equal(timestamp3,observations.ElementAt(2).Timestamp);
+            Assert.Equal("Message3", observations.ElementAt(2).Message);
+            Assert.Equal("Location3", observations.ElementAt(2).Location);
+    }
     
 }
 
